@@ -36,13 +36,6 @@ struct ListNode {
 };
 
 
-struct cmp1{
-	bool operator()(const pair<int, int> &a, const pair<int, int> &b){
-		return a.first + a.second < b.first + b.second;
-	}
-};
-
-
 class Solution {
 public:
 	vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
