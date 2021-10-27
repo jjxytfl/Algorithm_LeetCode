@@ -1,0 +1,70 @@
+#include<iostream>
+#include<string>
+#include <vector>   //一遍过
+
+
+
+using namespace std;
+
+
+class Solution {
+public:
+	string convert(string s, int numRows) {
+		
+		int n = s.size();
+		if (n <= numRows||numRows==1)return s;
+		int i, j;
+		int nj = 2 * numRows - 2;
+		int ni = n / (2 * numRows - 2);
+		vector<string> result(numRows + 1, string());
+		cout << nj<<ni << endl;
+
+		for (i = 0; i < ni; ++i){
+			for (j = 0; j < nj; ++j){
+				if (j < numRows){
+					result[j] += s[i * nj + j]; cout << j << " " << s[i * nj + j] << endl;
+				}
+				else{
+					result[2 * numRows - j - 2] += s[i*nj + j]; cout << 2 * numRows - j - 2 << " " << s[i * nj + j] << endl;
+				}
+
+			}
+
+		}
+		for (j = 0; j < n-i*nj; j++){
+			if (j < numRows){
+				result[j] += s[i*nj + j]; cout << j << " " << s[i * nj + j] << endl;
+			}
+			else{
+				result[2 * numRows - j - 2] += s[i*nj + j]; cout << 2 * numRows - j - 2 << " " << s[i * nj + j] << endl;
+			}
+		}
+
+		string str;
+		
+		for (int k = 0; k < result.size(); ++k){
+			cout << result[k] << endl;
+			str += result[k];
+		}
+
+		return str;
+
+
+	}
+};
+
+int main()
+{
+	Solution a;
+
+	string sa = "abcdef123456";
+	
+
+
+	cout <<"**"<< a.convert(sa, 3) << endl;
+	
+	
+
+	system("pause");
+	return 0;
+}

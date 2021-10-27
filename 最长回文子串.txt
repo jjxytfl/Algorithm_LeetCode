@@ -1,0 +1,94 @@
+给定一个字符串S，找到s中最长的回文子串。
+你可以假设s的最大长度为1000。
+
+
+                                                                                                                                 /////////待优化算法，算法太过暴力
+                                                                                                                                 /////////输入函数存在问题
+
+
+
+#include<string.h>
+#include<windows.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+struct B{
+	int l;
+	int k;
+};
+
+int Shuru(char *num){
+	char n;
+	int i = 0;
+	printf("请输字符串(输入N结束);\n");
+	scanf("%c", &n);
+	while (n != 'N')
+	{
+		num = (char *)realloc(num, sizeof(char)*(i+1));
+		num[i++] = n;
+		scanf("%c", &n);
+	}
+	return i;
+}
+
+
+
+int main()
+{
+	struct B *d;
+	char *num=NULL;
+	char x;
+	int l;
+	int i, j;
+	int a, b;
+	char n;
+	x = 'N';
+	l = 0;
+	printf("请输字符串(输入N结束);\n");
+	scanf("%c", &n);
+	while (n != 'N')
+	{
+		num = (char *)realloc(num, sizeof(char)*(l + 1));
+		num[l++] = n;
+		scanf("%c", &n);
+	}
+	d = (struct B *)malloc(sizeof(struct B));
+	d->k = 0;
+	d->l = 0;
+	for (i = 0; i < l - 1; i++)
+	{
+		for (j = l - 1; j>i; j--)
+		{
+			if (num[i] == num[j])
+			{
+				a = i; b = j;
+				while (num[++a] == num[--b])
+				{
+					if (a >= b){
+						x = 'Y';
+						if (j - i > d->l){
+							d->l = j - i;
+							d->k = i;
+							break;
+						}
+					}
+				}
+			}
+			if (x == 'Y')
+			{
+				x = 'N';
+				break;
+			}
+		}
+	}
+	j = d->k;
+	for (i = 0; i < d->l+1; i++)
+	{
+		printf("%c    ", num[j++]);
+	}
+
+
+
+	free(num);
+	system("pause");
+}

@@ -1,0 +1,72 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include<algorithm>     //这是官方题解  时间复杂度也 O(n^3)  跟我最初思路一样 害，没想到官方也有暴力的时候
+
+using namespace std;
+
+class Solution {
+public:
+	vector<vector<int>> fourSum(vector<int>& nums, int target) {
+		vector<vector<int>> quadruplets;
+		if (nums.size() < 4) {
+			return quadruplets;
+		}
+		sort(nums.begin(), nums.end());
+		int length = nums.size();
+		for (int i = 0; i < length - 3; i++) {
+			if (i > 0 && nums[i] == nums[i - 1]) {
+				continue;
+			}//相邻的相同
+			if (nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target) {
+				break;
+			}//i为第一个最小的情况
+			if (nums[i] + nums[length - 3] + nums[length - 2] + nums[length - 1] < target) {
+				continue;
+			}//i为第一个最大的情况
+			for (int j = i + 1; j < length - 2; j++) {
+				if (j > i + 1 && nums[j] == nums[j - 1]) {
+					continue;
+				}//相邻的相同
+				if (nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target) {
+					break;
+				}//i为第一个j为第二个 最小的情况
+				if (nums[i] + nums[j] + nums[length - 2] + nums[length - 1] < target) {
+					continue;
+				}//i为第一个j为第二个 最大的情况
+				int left = j + 1, right = length - 1;
+				while (left < right) {//双指针
+					int sum = nums[i] + nums[j] + nums[left] + nums[right];
+					if (sum == target) {//找到目标
+						quadruplets.push_back({ nums[i], nums[j], nums[left], nums[right] });
+						while (left < right && nums[left] == nums[left + 1]) {
+							left++;
+						}//去重
+						left++;
+						while (left < right && nums[right] == nums[right - 1]) {
+							right--;
+						}//去重
+						right--;
+					}
+					else if (sum < target) {
+						left++;//不够 增加left
+					}
+					else {
+						right--;
+					}
+				}
+			}
+		}
+		return quadruplets;
+	}
+};
+
+int main(){
+	Solution a;
+	vector<int> b = { 1, 2, 3 };
+	vector<int> c = { 1, 2, 3 };
+
+	if (b == c)cout << "okok" << endl;
+
+	system("pause");
+}

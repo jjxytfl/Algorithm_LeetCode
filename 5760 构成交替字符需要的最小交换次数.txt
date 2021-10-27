@@ -1,0 +1,54 @@
+#include<iostream>
+#include<string> //时间  O(n)  空间O(0)
+
+
+using namespace std;
+
+class Solution {
+public:
+	int minSwaps(string s) {
+		int n = s.size();
+		int num1, num0;
+		int min=-1;
+		//第一位为1
+		num1 = 0; num0 = 0;
+		for (int i = 0; i < n; i++){
+			if (i % 2){//
+				if (s[i] != '0')num1++;
+			}
+			else{//奇数
+				if (s[i] != '1')num0++;
+			}
+			cout << num0 << "  " << num1 << endl;
+		}
+		if (num1 == num0)min = num1;
+		cout << endl;
+		//第一位为0
+		num1 = 0; num0 = 0;
+		for (int i = 0; i < n; i++){
+			if (i % 2){//
+				if (s[i] != '1')num1++;
+			}
+			else{//奇数
+				if (s[i] != '0')num0++;
+			}
+			cout << num0 << "  " << num1 << endl;
+		}
+		if (num1 == num0){
+			if (min==-1||min>num1)
+			min = num1;
+		}
+		return min;
+
+	}
+};
+
+int main()
+{
+	Solution a;
+	cout << a.minSwaps("1011010");
+
+
+	system("pause");
+	return 0;
+}

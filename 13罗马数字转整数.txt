@@ -1,0 +1,63 @@
+#include<iostream>
+#include<string>  //easy
+
+
+
+using namespace std;
+
+class Solution {
+public:
+	int romanToInt(string s) {
+		int n = s.size();
+		char lm[] = { 'M', 'D', 'C', 'L', 'X', 'V', 'I' };
+		int i = 0,j=0;
+		int re = 0;
+		int t = 1;
+		while (i < 7){
+			if (j >= n)break;
+			if (s[j] == lm[i + 2]){
+				if (j+1<n&&s[j + 1] == lm[i + 1]){
+					re += 400 / t;
+					j+=2;
+				}
+				else if (j + 1<n&&s[j + 1] == lm[i]){
+					re += 900 / t;
+					j += 2;
+				}
+				else{
+					for (; s[j] == lm[i + 2]&&j<n; j++){
+						cout << "  j  =" << j << endl;
+						re += 100 / t;
+					}
+				}
+
+			}
+			else{
+				if (s[j] == lm[i + 1]){
+					re += 500 / t; j++;
+				}
+				else if (s[j] == lm[i]){
+					re += 1000 / t; j++;
+				}
+				else{
+					i += 2;t *= 10;
+				}
+
+
+			}
+			
+			
+		}
+		return re;
+	}
+};
+
+int main()
+{
+	Solution a;
+
+	cout << a.romanToInt("LVIII") << endl;
+
+	system("pause");
+	return 0;
+}

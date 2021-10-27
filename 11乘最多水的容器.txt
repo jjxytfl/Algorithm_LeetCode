@@ -1,0 +1,56 @@
+#include<iostream>
+#include <vector>               // 经典  双指针
+
+
+
+using namespace std;
+
+
+class Solution {
+public:
+	int maxArea(vector<int>& height) {
+		int n = height.size();
+		if (n < 2)return 0;
+		int max = 0;
+		
+		int i = 0, j = n - 1;
+
+		while (1){
+			int h = height[i] < height[j] ? height[i] : height[j];
+			
+			if (h*(j - i)>max){
+				max = h*(j - i);
+			}
+			if (height[i] < height[j]){
+				i++;
+			}
+			else {
+				j--;
+			}
+			if (i >= j)break;
+
+
+		}
+		
+
+		return max;
+
+
+	}
+};
+
+int main()
+{
+	Solution a;
+
+	vector<int > re = { 1, 2};
+
+	string sa = "0000000000123";
+	
+	cout << a.maxArea(re) << endl;
+	
+	
+
+	system("pause");
+	return 0;
+}

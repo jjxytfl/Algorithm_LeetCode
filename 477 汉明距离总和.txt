@@ -1,0 +1,52 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include<bitset>             //接近双0  
+
+using namespace std;
+
+
+//class Solution {    //可以提交上去 不过接近双0  因为vector<bitset<32>> bitnum;浪费了大量空间，位运算可能会更快更节省空间，下面是官方题解
+//public:
+//	int totalHammingDistance(vector<int>& nums) {
+//		int n = nums.size();
+//		vector<bitset<32>> bitnum;
+//		int count = 0;
+//		for (int i = 0; i < n; i++){
+//			bitset<32> bit(nums[i]);
+//			bitnum.push_back(bit);
+//		}
+//		for (int i = 0; i < 32; i++){
+//			int k = 0;
+//			for (int j = 0; j < n; j++){
+//				if (bitnum[j][i] != 1)k++;
+//			}
+//			count += k*(n - k);
+//		}
+//		return count;
+//
+//	}
+//};
+class Solution {
+public:
+	int totalHammingDistance(vector<int> &nums) {
+		int ans = 0, n = nums.size();
+		for (int i = 0; i < 30; ++i) {
+			int c = 0;
+			for (int val : nums) {
+				c += (val >> i) & 1;
+			}
+			ans += c * (n - c);
+		}
+		return ans;
+	}
+};
+
+
+int main(){
+	Solution a;
+
+
+
+	system("pause");
+}

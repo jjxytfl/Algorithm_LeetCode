@@ -1,0 +1,104 @@
+
+
+给定两个大小为m和n的正序(从小到大)数组nums1和nums2。
+请你找出并返回这两个正序数组的中位数。
+
+进阶:你能设计一个时间复杂度为0(log (m+n))的算法解决此问题吗?                  ///////////////未考虑
+
+
+
+
+#include<string.h>
+#include<windows.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+
+#define M 4
+#define N 3
+
+void Shuru(int a[],int n)
+{
+	int i;
+	int x;
+	printf("请按从小到大的顺序输入%d个数:\n", n);
+	for (i = 0; i < n; i++)
+	{
+		scanf("%d", &x);
+		a[i] = x;
+	}
+}
+
+void Shuchu(int *a,int k)
+{
+	int i;
+	for (i = 0; i < k; i++)
+	{
+		printf("%d  ", *(a + i));
+	}
+	printf("\n");
+}
+
+void Zhongweishu(int *a, int k)
+{
+	int x;
+	if (!k % 2){
+		x = (a[k / 2] + a[k / 2 - 1]) / 2;
+	}
+	else{
+		x = a[k / 2];
+	}
+	printf("中位数为%d\n", x);
+}
+
+
+int main()            
+{
+	int m[M];
+	int n[N];
+	int *c=NULL;
+	int i, j, k;
+	i = 0; j = 0; k = 0;
+	
+	Shuru(m, M);
+	Shuru(n, N);
+	while (1)
+	{
+		if (m[i] < n[j]){
+			c = (int *)realloc(c,sizeof(int)*(k + 1));
+			c[k++] = m[i++];
+			if (i >= M)break;
+		}
+		if (m[i] == n[j]){
+			c = (int *)realloc(c, sizeof(int)*(k + 1));
+			c[k++] = m[i++];
+			j++;
+			if (i >= M||j>=N)break;
+		}
+		if (m[i] > n[j]){
+			c = (int *)realloc(c, sizeof(int)*(k + 1));
+			c[k++] = n[j++];
+			if (j >= N)break;
+		}
+	}
+	if (i >= M&&j<N){
+		while (j < N)
+		{
+			c = (int *)realloc(c, sizeof(int)*(k + 1));
+			c[k++] = n[j++];
+		}
+	}
+	if (j >= N&&i<M){
+		while (i < M)
+		{
+			c = (int *)realloc(c, sizeof(int)*(k + 1));
+			c[k++] = m[i++];
+		}
+	}
+	printf("%d\n", sizeof(c));
+	Shuchu(c,k);
+	Zhongweishu(c, k);
+
+	free(c);
+	system("pause");
+}

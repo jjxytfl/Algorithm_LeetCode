@@ -1,0 +1,85 @@
+给定N个非负整数表示每个宽度为1的高度图，计算按此排序的柱子，下雨之后能接多少雨水。
+
+
+
+
+
+#include<string.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+
+int * Shuru(int *l)
+{
+	int *a = NULL;
+	int i = 0;
+	int n;
+	printf("请输入:(-1结束)\n");
+	while (1)
+	{
+		
+		scanf("%d", &n);
+		if (n == -1)break;
+		a = (int *)realloc(a, sizeof(int)*(i+1));
+		a[i] = n;
+		i++;
+	}
+	*l = i;
+
+	return a;
+}
+void Yushui(int L,int *num)
+{
+	int a, b, i;
+	int max;
+	int sign=0;
+	int sum=0;
+	for (i = 0; i < L; i++)
+	{
+		for (a = i+1; a < L-1; a++)
+		{
+			if (num[a] >= num[i]){
+				sign = 1;
+				b = a;
+				break;
+			}
+		}
+		if (sign)
+		{
+			for (a = i + 1; a < b; a++)
+			{
+				sum += (num[i] - num[a]);
+			}
+			i = a - 1;
+			sign = 0;
+		}
+		else{
+			max = 0;
+			for (a = i + 1; a < L; a++)
+			{
+				if (num[a]>max){ max = num[a]; b = a; }
+			}
+			for (a = i + 1; a < b; a++)
+			{
+				sum += (max - num[a]);
+			}
+			i = a - 1;
+
+		}
+	}
+	printf("雨滴为%d\n", sum);
+}
+
+int main()
+{
+	int *num;
+	int L;
+	num = Shuru(&L);
+	Yushui(L,num);
+	
+	free(num);
+
+
+	system("pause");
+	return 0;
+}

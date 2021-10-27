@@ -1,0 +1,38 @@
+class Solution {
+public:
+	string maxValue(string n, int x) {
+		int s = n.size();
+		int index=1;
+		if (n[0] == '-'){
+			index = 0;
+		}
+		string xs ;
+		xs += '0'+x;
+		if (index){
+			int i;
+			for (i = 0; i < s; ++i){
+				if (x>n[i] - '0'){
+					n.insert(i,xs);
+					break;
+				}
+			}
+			if (i == s){
+				n += xs;
+			}
+		}
+		else{
+			int i;
+			for (i = 1; i < s; ++i){
+				if (x < n[i] - '0'){
+					n.insert(i, xs);
+					break;
+				}
+			}
+			if (i == s){
+				n += xs;
+			}
+		}
+
+		return n;
+	}
+};

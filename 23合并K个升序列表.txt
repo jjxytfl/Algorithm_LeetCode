@@ -1,0 +1,115 @@
+#include<iostream>
+#include <vector>          //这道题提交的时候一直提交不上去，后来发现题目好像不让我重新申请空间，所以我就改了一下循环条件，时间复杂度中等。
+
+using namespace std;
+
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
+
+};
+
+
+class Solution {
+public:
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		ListNode* head = nullptr;
+		int i, j, k;
+		for (i = 0; i < lists.size(); i++){
+			if (head == nullptr){
+				head = lists.at(i);//1 init
+			}
+			else{
+				ListNode* it;
+				ListNode* phead = head;
+				ListNode* thead = phead;
+				int hindex = 0;
+
+				for (it = lists.at(i); it != nullptr;){
+					while (1){
+						if (phead != nullptr){
+							hindex++;
+							if (it->val <= phead->val){
+								if (phead == head){
+									ListNode* ittemp = it;//不能改变本身的值
+									it = it->next;
+									ittemp->next = phead;
+									thead = ittemp;
+									if (hindex == 1)head = thead;
+									break;
+								}
+								else{
+									ListNode* ittemp = it;
+									it = it->next;
+									thead->next = ittemp;
+									ittemp->next = phead;
+									thead = ittemp;
+
+
+									break;
+								}
+
+							}
+							else {
+								thead = phead;
+								phead = phead->next;
+							}
+						}
+						else{
+							ListNode* ittemp = it;
+							it = it->next;
+							thead->next = ittemp;
+							ittemp->next = nullptr;
+							thead = thead->next;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return head;
+	}
+};
+
+
+int main(){
+	Solution a;
+	
+	
+	
+	ListNode ahead4(7, nullptr);
+	ListNode ahead3(5, &ahead4);
+	ListNode ahead2(4, &ahead3);
+	ListNode ahead1(2, &ahead2);
+	ListNode* ahead = &ahead1;
+
+
+
+	ListNode bhead3(4, nullptr);
+	ListNode bhead2(3, &bhead3);
+	ListNode bhead1(1, &bhead2);
+	ListNode* bhead = &bhead1;
+
+
+	ListNode chead6(0, nullptr);
+	ListNode chead1(0, &chead6);
+	ListNode* chead = &chead1;
+
+	ListNode* dhead;
+	vector<ListNode*> lists;
+	//lists.push_back(dhead);
+	lists.push_back(ahead);
+	lists.push_back(bhead);
+	lists.push_back(chead);
+
+	ListNode* head=a.mergeKLists(lists);
+	while (head != nullptr){
+		cout << head->val << " ";
+		head = head->next;
+	}
+
+	system("pause");
+}

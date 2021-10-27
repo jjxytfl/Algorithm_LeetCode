@@ -1,0 +1,252 @@
+//这道题目本没有提交时觉得还不难，提交之后硬是2天没做出来，一方面是力扣编译器与vs存在差异另一方面这道题目太灵活我又不愿意换方法导致代码越写越大，以下代码只是最初的版本不做修改，引以为戒。
+
+
+#include<string.h>
+#include<windows.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+char *  Xinjian(int *l)
+{
+	char *a = NULL;
+	printf("请输入(N结束)；\n");
+	int i = 0;
+	char b;
+	while (1){
+		scanf("%c", &b);
+		if (b == 'N')break;
+		a = (int *)realloc(a, sizeof(int)*(i + 1));
+		a[i++] = b;
+	}
+	*l = i;
+	return a;
+}
+
+void Panduan(char *s, char *p, int pl, int sl)
+{
+	int i, j, k;
+	char c;
+	k = 0;
+
+	for (j = 0; j < pl; j++)
+	{
+		if (p[j] == '*')
+		{
+			if (p[j - 1] == '.'){
+				k = sl;
+				break;
+			}
+			if (s[k] == p[j - 1])
+			{
+				k++;
+				while (s[k-1] == s[k]){
+					k++;
+				};
+				while (p[j] == p[j+1]){
+					j++;
+				};
+			}
+			else{
+				k = 0;
+			}
+			
+		}
+		if (p[j] == '.')
+		{
+			if (s[k] > 'a'&&s[k] < 'z')
+			{
+				k++;
+			}
+			else{
+				k = 0;
+			}
+		
+		}
+		if (s[k] == p[j])
+		{
+			k++;
+			
+		}
+		if (k == sl )break;
+	}
+	if (k == sl )
+	{
+		printf("ture\n");
+	}
+	else{
+		printf("false\n");
+	}
+}
+
+
+int main()
+{
+	char *s;
+	int sl;
+	char *p;
+	int pl;
+	
+	printf("请输入字符串s");
+	s = Xinjian(&sl);
+	printf("请输入字符串p");
+	p = Xinjian(&pl);
+	
+	Panduan(s, p, pl, sl);
+	
+	free(s);
+	free(p);
+
+
+	system("pause");
+}
+
+
+bool isMatch(char * s, char * p);
+
+bool isMatch(char * s, char * p){
+    static int ce = 0;
+	int sl = strlen(s);
+	int pl = strlen(p);
+	int i, k;
+	char c;
+	k = 0;
+    if (!ce++)
+    for (int ceshi = pl - 1; ceshi > 0; ceshi--){
+		if (p[ceshi] == '*'&&p[ceshi - 1] == '.'){
+			return isMatch(&s[k], &p[ceshi - 1]);
+		}
+	}
+	for (i = 0; i < pl-1; i++)
+	{
+		if (p[i + 1] == '*'){
+			if (p[i] == '.'){
+				if (pl - i <= 2){
+					return true;
+				}
+				if (p[i + 3] == '*'){//wen zhi diandao   '.'  //p[i + 2] == '.' || 
+					int tk = k;
+					while (1){
+						if (isMatch(&s[k], &p[i + 2]))return true;
+						k++;
+						if (k >= sl)break;
+					}
+					k = tk;
+					while (1){
+						if (isMatch(&s[k], &p[i + 4]))return true;
+						k++;
+						if (k >= sl)return false;
+					}
+				}
+				else if (p[i + 2] == '.'){
+					if (pl - i - 2 <= 1)return true;
+					else {
+						while (1){
+							if (isMatch(&s[k], &p[i + 2]))return true;
+							k++;
+							if (k >= sl)return false;
+						}
+					}
+				}
+				else{
+					while (1){
+						while (s[k] != p[i + 2]){
+							 k++;
+							if (k >= sl)return false;
+						}
+						if (isMatch(&s[k], &p[i + 2]))return true;
+						if (k < sl - 1)k++;
+					}
+				}
+			}
+			else if (p[i] != s[k]){
+				i++;  if (k >= sl)return true;
+			}
+			else {//p[i] == s[k]
+				if (isMatch(&s[k], &p[i+2]))return true;
+				int nums = 0;
+				int nump = 0;
+				int num = 0;
+				int numx = 0;
+				int numd = 0;//  .  num
+				while (s[k] == p[i]){
+					k++;
+					nums++;
+					if (k >= sl)break;
+				}
+				num = i ;
+				if (sl - k >= 1){
+					if (pl - i > 2){
+						while (1){
+							while (p[num] != s[k] && p[num] != '.'){//如果s后面还有
+								if (pl - num <= 0){  return false; }
+								if (p[num] != '*'&&p[num - 1] != '*' && p[num] != s[k - 1]){  return false; }
+								if (p[num] == '*')numx++;
+								num++; 
+							}
+							if (p[num] == '.'&&p[num + 1] != '*')numd++;
+							if (numd > nums)return false;
+							int numxh = num - i;//
+							nump = numxh - 2 * numx;
+							if (nump > nums)return false;
+							i = num;
+							if (isMatch(&s[k], &p[i]))return true;
+							if (p[++num] != '*'&&p[num]!='.'){//chu lai jiu shi zhao dao le
+								break;
+							}
+						}
+					}
+				}
+				else {
+					while (1){
+						num++; 
+						if (p[num] != s[k - 1] && p[num] != '*'&&p[num - 1] != '*'&&p[num]!='\0')return false;
+						if (pl - num <= 0)break;//
+						if (p[num] == '*')numx++;
+					}
+                    int numxh = num  - i;
+				    nump = numxh - 2 * numx; 
+				    if (nump > nums)return false;
+				    i = num - 2; 
+                    return true;
+
+				}//如果没有
+				
+				int numxh = num  - i;
+				nump = numxh - 2 * numx; 
+				if (nump > nums)return false;
+				i = num - 2; 
+			}
+		}
+		else if (p[i] == '.'){
+			if (k >= sl)return false;
+			k++;//
+		}
+		else if (p[i] == s[k]){
+			k++;
+		}
+		else return false;
+
+		if (k >= sl){
+			if (i == pl - 1)return true; 
+			int numx=0;
+			int num=0;
+			for (i++; i < pl; i++){
+				num++;
+				if (p[i] == '*')numx++;
+			}
+			if (num - (2 * numx)>0)return false;
+			else return true;
+		}
+	}
+	if (i == pl - 1){
+		if (p[i] == '.'){//you dian wen ti
+			k++;
+		}
+		else if (p[i] == s[k]){
+			k++;
+		}
+		else return false;
+	}
+	if (k == sl)return true;
+	else return false;
+}

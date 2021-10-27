@@ -1,0 +1,52 @@
+#include<iostream>
+#include<string>       //一定要先构思清楚在提交不然会打击自信的
+
+#include<cstdlib>
+#include<ctime>//clock_t start,end1;
+
+using namespace std;
+
+
+
+
+class Solution {
+public:
+	int lengthOfLongestSubstring(string s) {
+		int n = s.size();
+		if (n<2)return n;
+
+		int max=0;
+		int i = 1, j = 0;
+
+		for (i = 1; i < n;i++){
+			if (j <= s.find(s[i],j) && s.find(s[i],j) < i){
+				if (i-1 - j>max){
+					max = i-1 - j;
+				}cout << s.find(s[i],j) << s[i] << endl;
+				j = s.find(s[i],j) + 1;
+				
+			}
+
+		}
+		if (n - 1 - j>max){
+			max = n - 1 - j;
+		}
+		max++;
+
+		return max;
+
+	}
+};
+
+int main()
+{
+	Solution a;
+
+	string sa = "aeead";
+	cout << " max " << a.lengthOfLongestSubstring(sa) << endl;
+	
+	
+
+	system("pause");
+	return 0;
+}

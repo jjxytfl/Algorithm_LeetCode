@@ -1,0 +1,85 @@
+#include<iostream> //本想着用动态规划做，可是看了一会才发现这个dp的意义好不好找，于是有以下写法，空间复杂度将近100，时间也70，80
+
+using namespace std;
+
+class Solution {
+public:
+	string longestPalindrome(string s) {
+		string result;
+		int max = 0;
+		int position=0;
+		int num = 0;
+		int slong = s.size();
+		cout << s.size() << endl;
+		for (int i = 0; i < slong; i++){//奇数回文子串
+			int temp=0;
+			int p=0, t=0;
+			while (1){
+				if (temp == 0){
+					p = i - 1;
+					t = i + 1;
+				}
+				else{
+					p--; t++;
+				}
+				cout << i << " " << temp << " " << p << " " << t << endl;
+				if (p < 0 || t >= s.size())break;
+				if (s.at(p) == s.at(t)){
+					cout << i << " " << s.at(p) << s.at(t) << endl;
+					temp++;
+				}
+				else break;
+			}
+			if (temp * 2 + 1>max){
+				max = temp * 2 + 1;
+				position = i;
+				num = temp;
+			}
+		}
+		for (int i = 0; i < slong-1; i++){//偶数回文子串
+			int temp = 0;
+			int p=0, t=0;
+			while (1){
+				if (s.at(i) != s.at(i + 1))break;
+				if (temp == 0){
+					p = i - 1;
+					t = i + 2;
+				}
+				else{
+					p--; t++;
+				}
+				if (p < 0 || t >= s.size())break;
+				if (s.at(p) == s.at(t)){
+					temp++;
+				}
+				else break;
+			}
+			if (s.at(i) == s.at(i + 1))
+			if (temp * 2 + 2>max){
+				cout << "***" << endl;
+				max = temp * 2 + 2;
+				position = i;
+				num = temp;
+			}
+		}
+
+		result.assign(s, position-num, max);
+		cout << result << endl;
+		return result;
+	}
+};
+
+
+
+int main()
+{
+	Solution a;
+
+	string word1 = "babadab";
+	string word2 = "spake";
+	
+	a.longestPalindrome(word1);
+
+	system("pause");
+	return 0;
+}

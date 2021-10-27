@@ -1,0 +1,29 @@
+#include<iostream>         //int的取值边界原来是有 宏定义的常量的  INT_MAX  INT_MIN
+
+
+using namespace std;
+
+
+class Solution {
+public:
+	int reverse(int x) {
+		long long temp = 0;
+		
+		while (!x){
+			temp = temp * 10 + x % 10;
+			x /= 10;
+		}
+		return temp > INT_MAX || temp < INT_MIN ? 0 : temp;
+	}
+};
+
+int main()
+{
+	Solution a;
+
+	cout << a.reverse(456) << endl;
+	
+
+	system("pause");
+	return 0;
+}

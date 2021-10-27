@@ -1,0 +1,80 @@
+给定一个非负整数数组，你最初位于数组的第一个位置。
+
+数组中的每个元素代表你在该位置可以跳跃的最大长度。
+
+你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+
+
+
+#include<string.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+
+int * Shuru(int *l)
+{
+	int *a = NULL;
+	int i = 0;
+	int n;
+	printf("请输入:(-1结束)\n");
+	while (1)
+	{
+		
+		scanf("%d", &n);
+		if (n == -1)break;
+		a = (int *)realloc(a, sizeof(int)*(i+1));
+		a[i] = n;
+		i++;
+	}
+	*l = i;
+
+	return a;
+}
+void Tiaoyue(int *num, int L)
+{
+	int increase;
+	int i, j, k;
+	int sub,max=0;
+	char sign = 'N';
+	int n;
+	i = 0; j = 0; k = 1;
+	while (i < L)
+	{
+		n = num[i];
+		for (j = 0; j < num[i]; j++)
+		{
+			if ((num[i + j+1] + i + j+2) >= L)
+			{
+				sign = 'Y';
+				break;
+			}
+			sub=num[i + j+1] - (n--);
+			if (sub>=max)
+			{
+				max = sub;
+				increase = j+1;
+			}
+			
+		}
+		k++;
+		if (sign == 'Y')break;
+		i += increase;
+
+	}
+	if (num[0]+1 >= L)k = 1;
+	printf("共需%d步\n", k);
+}
+
+
+int main()
+{
+	int *num;
+	int L;
+	num = Shuru(&L);
+	Tiaoyue(num, L);
+	free(num);
+
+
+	system("pause");
+	return 0;
+}

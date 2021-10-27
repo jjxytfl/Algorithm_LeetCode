@@ -1,0 +1,64 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>       //第一次困难一次通过  时间较慢  内存100  不知道为何时间满
+#include<string>
+
+using namespace std;
+
+
+class Solution {
+public:
+	int ladderLength(string beginWord, string endWord, vector<string>& wordList) {
+		vector<string>::iterator it = find(wordList.begin(), wordList.end(), endWord);
+		if (it != wordList.end())
+		{
+			wordList.erase(it);
+			wordList.push_back(endWord);
+		}
+		else{
+			return 0;
+		}
+		wordList.insert(wordList.begin(), beginWord);
+		int n = wordList.size();
+
+		vector<int> dp(n, 0);
+		dp[0] = 1;
+		vector<int> temp = {0};
+		int num = 0;
+		
+		for (int i = 0; i < temp.size(); ++i){
+			for (int j = 1; j < n; ++j){
+				if (isOk(wordList[temp[i]], wordList[j])){
+					if (dp[j] == 0){
+						dp[j] = dp[temp[i]] + 1; temp.push_back(j);
+					}
+				}
+			}
+			if (dp[n - 1])return dp[n - 1];
+		}
+
+		return 0;
+		
+
+	}
+
+	bool isOk(string& a, string& b){
+		int n = a.size();
+		int num=0;
+		for (int i = 0; i < n; ++i){
+			if (a[i] != b[i])num++;
+		}
+		return num == 1;
+	}
+};
+
+
+int main(){
+	Solution a;
+	string s = "(u(love)i)";
+	
+
+	system("pause");
+}
+
+

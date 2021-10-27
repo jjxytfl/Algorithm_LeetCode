@@ -1,0 +1,137 @@
+#include<string.h>
+#include<windows.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+
+
+给出两个非空的链表用来表示两个非负的整数。其中，它们各自的位数是按照逆序的方式存储的，并且它们的每个节点只能存储一位数字。
+
+如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+
+您可以假设除了数字0之外，这两个数都不会以0开头。
+
+
+struct Shuzi{
+	int n;
+	struct Shuzi * next;
+};
+
+void Shuru(struct Shuzi **head){
+	struct Shuzi *a,*t;
+	t = *head;
+	t->next = NULL;
+	int n;
+	while (1)
+	{
+		printf("请输入\n（-1结束）");
+		scanf("%d", &n);
+		if (n < 0)break;
+		a = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+		a->n = n;
+		a->next = t->next;
+		t->next = a;
+		
+	}
+}
+
+void SHURU(struct Shuzi **head)
+{
+	struct Shuzi *s,*r;
+	r = *head;
+	int a;
+	printf("请将一个数一位位输入；\n");
+	while (1)
+	{
+		
+		printf("请输入（-1代表结束）\n");
+		scanf("%d", &a);
+		if (a == -1)break;
+		s = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+		s->n = a;
+		r->next = s;
+		r = s;
+	}
+	r->next = NULL;
+
+}
+
+void ADD(struct Shuzi * heada, struct Shuzi *headb,struct Shuzi **headc)
+{
+	struct Shuzi *a, *b, *c,*ct;
+	int x,y;
+	
+	y = 0;
+	a = heada;
+	b = headb;
+	ct = *headc;
+	ct->next=NULL;
+	while (a->next != NULL&&b->next != NULL)
+	{
+		a = a->next;
+		b = b->next;
+		x = a->n + b->n + y;
+		c = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+		c->n = x % 10;
+		c->next = ct->next;
+		ct->next = c;
+		
+		y = 0;
+		if (x >= 10)y = 1;
+		
+	}
+	if (a->next != NULL&&b->next==NULL)
+	{
+		x = a->n + y;
+		c = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+		c->n = x % 10;
+		c->next = ct->next;
+		ct->next = c;
+		y = 0;
+		if (x >= 10)y = 1;
+		a = a->next;
+	}
+	if (b->next != NULL&&a->next==NULL)
+	{
+		x = b->n + y;
+		c = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+		c->n = x % 10;
+		c->next = ct->next;
+		ct->next = c;
+		y = 0;
+		if (x >= 10)y = 1;
+		b = b->next;
+	}
+	
+}
+void SHUCHU(struct Shuzi *head)
+{
+	struct Shuzi *a;
+	a = head;
+	while (a->next != NULL)
+	{
+		
+		a = a->next;
+		printf("%d", a->n);
+	}
+}
+
+int main()            
+{
+	struct Shuzi *heada, *headb, *headc;
+
+	heada = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+	headb = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+	headc = (struct Shuzi *)malloc(sizeof(struct Shuzi));
+	
+	Shuru(&heada);
+	Shuru(&headb);
+	ADD(heada, headb, &headc);
+	SHUCHU(headc);
+
+	
+	
+
+	
+	system("pause");
+}

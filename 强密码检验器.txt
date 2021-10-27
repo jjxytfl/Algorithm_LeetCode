@@ -1,0 +1,83 @@
+密码应满足以下所有条件：
+1.至少有6个，之多有20个字符组成；
+2.至少包含一个大写字母，一个小写字母，和一个数字；
+3.同一个字符不能重复出现3次；
+
+
+
+#include<string.h>
+#include<windows.h>
+#include<stdio.h>
+#include<stdlib.h>
+
+
+
+char *  Xinjian(int *l)
+{
+	char *a = NULL;
+	printf("请输入(N结束)；\n");
+	int i = 0;
+	char b;
+	while (1){
+		scanf("%c", &b);
+		if (b == 'N')break;
+		a = (int *)realloc(a, sizeof(int)*(i + 1));
+		a[i++] = b;
+	}
+	*l = i;
+	return a;
+}
+
+void Jianyan(int l,char *mima)
+{
+	int d, x, s;
+	int n;
+	char N='Y';
+	int i;
+	d = 0; x = 0; s = 0; n = 1;
+	if (l<6 || l>20){
+		printf("密码长度不符;\n");
+	}
+	for (i = 0; i < l; i++)
+	{
+		if (mima[i]>'A'&&mima[i] < 'Z')d = 1;
+		if (mima[i]>'a'&&mima[i] < 'z')x = 1;
+		if (mima[i]>48&&mima[i] < 57)s = 1;
+		if (mima[i] == mima[i + 1]){
+			n++;
+		}
+		else{
+			n = 1;
+		}
+		if (n == 3){
+			N = 'N';
+			printf("密码重复出现三个字符\n");
+		}
+	}
+	if (!d){
+		printf("没有大写字母  \n");
+	}
+	if (!x){
+		printf("没有小写字母  \n");
+	}
+	if (!s){
+		printf("没有数字  \n");
+	}
+	if (!(d + x + s - 3) && N != 'N'&&l >= 6 && l <= 20)
+	{
+		printf("密码符合条件\n");
+	}
+}
+
+int main()
+{
+	char *mima;
+	int l;
+	mima = Xinjian(&l);
+	Jianyan(l, mima);
+
+	free(mima);
+
+	system("pause");
+}
+

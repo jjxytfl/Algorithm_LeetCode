@@ -1,0 +1,40 @@
+#include<iostream>//简单也确实简单看着题目10分钟写下来，本来还想简化一些算法 sort（）排序后在比较但是就这都超过90%多的速度了，罢了罢了！
+#include <vector>
+
+
+using namespace std;
+
+
+
+class Solution {
+public:
+	vector<int> twoSum(vector<int>& nums, int target) {
+		vector<int> result;
+		int temp = 0;
+		int and = 0;
+		int ns = nums.size();
+		for (int i = 0; i < ns; i++){
+			for (int j = 0; j < ns; j++){
+				if (nums.at(i) + nums.at(j) == target){
+					if (i != j){
+						result.push_back(i);
+						result.push_back(j);
+						cout << i << "  " << j << endl;
+						return result;
+					}
+				}
+			}
+		}
+		return result;
+	}
+};
+
+
+
+int main(){
+	Solution a;
+	vector<int> nums = { 3, 2, 4,11,15 };
+	a.twoSum(nums, 18);
+	
+	system("pause");
+}

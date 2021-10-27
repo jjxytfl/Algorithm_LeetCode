@@ -1,0 +1,102 @@
+#include<iostream>
+#include<vector>  //并不正确  学到了 dp在某些情况下要从后面开始   不然会使dp失去后效性
+
+using namespace std;
+
+struct Position{
+	int num;
+	int min;
+};
+
+class Solution {
+public:
+	int calculateMinimumHP(vector<vector<int>>& dungeon) {
+		int m = dungeon.size();
+		int n = dungeon[0].size();
+		vector<vector<Position>> warrior(m,(vector<Position>(n,Position())));
+		//init
+		warrior[0][0].num = dungeon[0][0];
+		if (dungeon[0][0] < 0)warrior[0][0].min = dungeon[0][0];
+		for (int i = 1; i < m; ++i){
+			warrior[i][0].num = warrior[i][0].num + dungeon[i - 1][0];
+			if (warrior[i][0].num < warrior[i-1][0].min){
+				warrior[i][0].min = warrior[i][0].num;
+			}
+			else{
+				warrior[i][0].min = warrior[i - 1][0].min;
+			}
+		}
+		for (int j = 1; j < n; ++j){
+			warrior[0][j].num = warrior[0][j].num + dungeon[0][j - 1];
+			if (warrior[0][j].num < warrior[0][j-1].min){
+				warrior[0][j].min = warrior[0][j].num;
+			}
+			else{
+				warrior[0][j].min = warrior[0][j - 1].min;
+			}
+		}
+		//dp
+		for (int i = 1; i < m; ++i){
+			for (int j = 1; j < n; ++j){
+				Position temp;
+				temp.num = warrior[i - 1][j].num + dungeon[i][j];
+				if (temp.num < warrior[i - 1][j].min){
+					temp.min = temp.num;
+				}
+				else{
+					temp.min = warrior[i - 1][j].min;
+				}
+				warrior[i][j].num = warrior[i][j - 1].num + dungeon[i][j];
+				if (warrior[i][j].num < warrior[i][j - 1].min){
+					warrior[i][j].min = warrior[i][j].num;
+				}
+				else{
+					warrior[i][j].min = warrior[i][j - 1].min;
+				}
+				if (temp.min>warrior[i][j].min){
+					warrior[i][j] = temp;
+				}
+				else if (temp.min == warrior[i][j].min){
+					if (temp.num > warrior[i][j].num){
+						warrior[i][j] = temp;
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < m; ++i){
+			for (int j = 0; j < n; ++j){
+				cout << warrior[i][j].num << "  " << warrior[i][j].min << "  ";
+			}cout << endl;
+		}
+
+		return -warrior[m - 1][n - 1].min + 1;
+	}
+};
+
+/*             //官方题解  我的问题在于从前往后遍历 这样会产生失后效性
+class Solution {
+public:
+int calculateMinimumHP(vector<vector<int>>& dungeon) {
+int n = dungeon.size(), m = dungeon[0].size();
+vector<vector<int>> dp(n + 1, vector<int>(m + 1, INT_MAX));
+dp[n][m - 1] = dp[n - 1][m] = 1;
+for (int i = n - 1; i >= 0; --i) {
+for (int j = m - 1; j >= 0; --j) {
+int minn = min(dp[i + 1][j], dp[i][j + 1]); 
+dp[i][j] = max(minn - dungeon[i][j], 1);   //刚开始怀疑他的正确性因为他没有记录 num 仔细想了之后发现并不需要记录，因为只要min为正，就与后面的数据没有关系了
+}
+}
+return dp[0][0];
+}
+};
+*/
+
+int main(){
+
+
+
+	system("pause");
+}
+
+

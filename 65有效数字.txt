@@ -1,0 +1,78 @@
+class Solution {
+public:
+	bool isNumber(string s) {
+		int Dposition,Eposition;
+		int Dnum = 0, Enum = 0;
+		if (s.size() > 0){
+			if (s.at(0) != '+'&&s.at(0) != '-'&&s.at(0) != '.')
+			if (s.at(0)<'0' || s.at(0)>'9')return false;
+			if (s.at(0) == '.'){ Dnum++; Dposition = 0; }
+		}
+		else return false;
+		for (int i = 1; i < s.size(); i++){
+			if (s.at(i)>='0'&&s.at(i) <='9'){
+
+			}
+			else if(s.at(i)=='e'||s.at(i)=='E'){
+				if (Enum == 0){
+					Enum ++;
+					int Enums = 0;
+					int Eqnums = 0; Eposition = i - 1;
+					if (s.at(Eposition)>='0'&&s.at(Eposition) <= '9'){
+
+					}
+					else if (s.at(Eposition) == '.'){
+						if (Eposition>0){
+							if (s.at(Eposition - 1) > '9' || s.at(Eposition - 1) < '0')
+								return false;
+						}
+						else return false; 
+					}
+					else return false;
+					Eposition = i + 1;
+					if (Eposition >= s.size()){
+						return false;
+					}
+					if (s.at(Eposition) == '+' || s.at(Eposition) == '-'){
+						Eposition++;
+					}
+					for (; Eposition < s.size(); Eposition++){
+						if (s.at(Eposition)>='0'&&s.at(Eposition)<='9')Enums++;
+						else return false;
+					}
+					if (Enums)return true;
+					else return false;
+				}
+				else return false; 
+			}
+			else if (s.at(i) == '.'){
+				if (Dnum == 0){
+					Dnum++; Dposition = i;
+				}
+				else return false;
+			}
+			else if (s.at(i) == '+' || s.at(i) == '-'){
+				if (s.at(i - 1) != 'e'&&s.at(i - 1) != 'E'){
+					return false;
+				}
+			}
+			else return false;
+		}
+		int Dresult=0;
+		if (Dnum){
+			if (Dposition>0)
+			if (s.at(Dposition - 1) >= '0'&&s.at(Dposition - 1) <= '9'){
+				Dresult = 1;
+			}
+			if (Dposition<s.size()-1)
+			if (s.at(Dposition + 1) >= '0'&&s.at(Dposition + 1) <= '9'){
+				Dresult = 1;
+			}
+			if (Dresult)return true;
+			else return false;
+		}
+
+		return true;
+
+	}
+};

@@ -1,0 +1,60 @@
+#include<iostream>
+#include<vector>        //力扣 接近双百 而且是一次通过,add oil Mr.Shu
+#include<string>
+
+using namespace std;
+
+
+
+class Solution {
+public:
+	string reverseParentheses(string s) {
+		int n = s.size();
+
+		vector<int> positions;
+
+		int num = 0;
+		int j = -1;
+		string re;
+		for (int i = 0; i < n; ++i){
+			if (s[i] == '('){
+				positions.push_back(i - num);
+				j++;
+				num++;
+			}
+			else if(s[i] == ')'){
+				num++;
+				swap(re, positions[j],i - num);
+				positions.pop_back();
+				j--;
+			}
+			else{
+				re += s[i];
+			}
+		}
+
+		return re;
+	}
+	void swap(string& re,int x,int y){
+
+		for (int i = 0; i < (y-x+1)/2; ++i){
+			char t = re[i + x];
+			re[i + x] = re[y - i];
+			re[y - i] = t;
+		}
+
+	}
+
+};
+
+
+int main(){
+	Solution a;
+	string s = "(u(love)i)";
+	
+	cout << a.reverseParentheses(s) << endl;
+
+	system("pause");
+}
+
+

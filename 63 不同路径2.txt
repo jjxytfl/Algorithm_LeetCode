@@ -1,0 +1,55 @@
+#include<iostream>
+#include <vector>      //动态规划   
+//内存已经进行优化(dp[i][j]只与dp[i][j-1]，dp[i-1][j]与obstacleGrid[i][j]有关)  力扣将内存将近一百
+
+using namespace std;
+
+
+class Solution {
+public:
+	int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+		int m = obstacleGrid.size();
+		int n = obstacleGrid[0].size();
+		vector<int> tempdp;
+		for (int i = 0; i < n; ++i){
+			if (obstacleGrid[0][i] == 0){
+				tempdp.push_back(1);
+			}
+			else {
+				for (int j = i; j < n; j++){
+					tempdp.push_back(0);
+				}
+			}
+		}
+
+		for (int i = 1; i < m; i++){
+			for (int j = 0; j < n; j++){
+				if (j == 0){
+					if (obstacleGrid[i][j] == 1){
+						tempdp[j] = 0;
+					}
+				}
+				else{
+					if (obstacleGrid[i][j] == 1){
+						tempdp[j] = 0;
+					}
+					else{
+						tempdp[j] += tempdp[j - 1];
+					}
+				}
+
+			}
+		}
+		return tempdp[n - 1];
+
+
+	}
+};
+
+int main()
+{
+	Solution a;
+
+	system("pause");
+	return 0;
+}

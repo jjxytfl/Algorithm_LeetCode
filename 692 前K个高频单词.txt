@@ -1,0 +1,71 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include <algorithm>            //思路挺暴力，没想到力扣还接近双百
+
+
+
+using namespace std;
+
+struct Word{
+	string str;
+	int time;
+
+	Word(string a, int t = 1) :str(a), time(t){};
+	bool operator<(const Word& b){
+		if (this->time<b.time){
+			return false;
+		}
+		else if (this->time == b.time){
+			return this->str < b.str;
+		}
+		else{
+			return true;
+		}
+
+	}
+};
+class Solution {
+public:
+	vector<string> topKFrequent(vector<string>& words, int k) {
+		int n = words.size();
+		vector<Word> res;
+		int idx = 0;
+		int kt = 0;
+		int i;
+		for (i = 0; i < n; i++){
+			idx = 0;
+			for (int j = 0; j < res.size(); j++){
+				if (res[j].str == words[i]){
+					res[j].time++;
+					idx = 1;
+					break;
+				}
+			}
+			if (idx)continue;
+			res.push_back(Word(words[i]));
+		}
+		sort(res.begin(), res.end());
+		vector<string> re;
+		for (int i = 0; i < k; i++){
+			re.push_back(res[i].str);
+
+		}
+
+		return re;
+
+	}
+};
+
+
+
+
+int main()
+{
+	Solution a;
+	vector<string> str = { "the", "day", "is", "sunny", "the", "the", "the", "sunny", "is", "is" };
+	a.topKFrequent(str,4);
+
+	system("pause");
+	return 0;
+}

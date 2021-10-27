@@ -1,0 +1,104 @@
+#include<iostream>
+#include <vector>   //进阶版--翻转链表本身
+
+using namespace std;
+
+struct ListNode {
+	int val;
+	ListNode *next;
+	ListNode() : val(0), next(nullptr) {}
+	ListNode(int x) : val(x), next(nullptr) {}
+	ListNode(int x, ListNode *next) : val(x), next(next) {}
+
+};
+
+class Solution {
+public:
+	ListNode* reverseKGroup(ListNode* head, int k) {
+		int num = 0;
+		ListNode* resulthead=nullptr;
+		ListNode* headnum=head;
+		while (headnum != nullptr){
+			num++; headnum = headnum->next;
+		}
+		int groupnums = num / k; cout << groupnums << endl;
+		if (groupnums == 0){
+			resulthead = head;
+		}
+		int i, j;
+		ListNode* thead=head;
+		ListNode* tail = head;
+		ListNode* lin = nullptr;
+		for (i = 0; i < groupnums; i++){
+			if (i == 0){
+				lin = thead;
+				for (j = 0; j < k - 1; j++){
+					tail = tail->next;
+				}
+				for (j = 0; j < k - 1; j++){
+					ListNode* temp = thead->next;
+					thead->next = tail->next;
+					tail->next = thead;
+					thead = temp;
+				}
+				
+				resulthead = tail;
+				tail = lin;
+				thead = lin;
+				cout << "  tail->val    /*/ " << tail->val << endl;
+			}
+			else {
+				for (j = 0; j < k; j++){
+					tail = tail->next;
+				}
+				cout  << "  tail->val  " <<tail->val<<  endl;
+				thead = thead->next;
+				lin->next = tail;
+				lin = thead;
+				cout <<  "  lin->val  "  <<lin->val << endl;
+				
+				for (j = 0; j < k - 1; j++){
+					ListNode* temp = thead->next;
+					thead->next = tail->next;
+					tail->next = thead;
+					thead = temp;
+				}
+
+				tail = lin;
+				thead = lin;
+			}
+
+		}
+		while (resulthead != nullptr){
+			cout << resulthead->val << " ";
+			resulthead = resulthead->next;
+		}
+
+
+		return resulthead;
+
+	}
+};
+
+
+int main(){
+	Solution a;
+	
+
+	//ListNode ahead8(8, nullptr);
+	ListNode ahead7(7, nullptr);
+	ListNode ahead6(6, &ahead7);
+	ListNode ahead5(5, &ahead6);
+	ListNode ahead4(4, &ahead5);
+	ListNode ahead3(3, &ahead4);
+	ListNode ahead2(2, &ahead3);
+	ListNode ahead1(1, &ahead2);
+	ListNode* ahead = &ahead1;
+
+
+	a.reverseKGroup(ahead, 5);
+
+
+
+	system("pause");
+}

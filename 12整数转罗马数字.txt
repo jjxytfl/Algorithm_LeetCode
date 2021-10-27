@@ -1,0 +1,75 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include <algorithm>  //一遍过
+
+
+
+using namespace std;
+
+
+class Solution {
+public:
+	string intToRoman(int num) {
+		vector<char> lm = {'I','V','X','L','C','D','M'};
+		vector<string> re;
+
+		int i = 0;
+		while (i<7){
+			int nb = num % 10;
+			string t;
+			if (nb < 5){
+				if (nb == 4){
+					t += lm[i];
+					t += lm[i + 1];
+				}
+				else{
+					for (int k = 0; k < nb; k++){
+						t += lm[i];
+					}
+				}
+				re.push_back(t); cout << t << endl;
+			}
+			else{
+				if (nb == 9){
+					t += lm[i];
+					t += lm[i + 2];
+				}
+				else{
+					t += lm[i + 1];
+					for (int k = 5; k < nb; k++){
+						t += lm[i];
+					}
+				}
+				re.push_back(t); cout << t << endl;
+			}
+
+			num /= 10;
+			if (!num)break;
+			i += 2;
+		}
+
+		string result;
+		for (int k = re.size()-1; k >=0; --k){
+			result += re[k];
+		}
+
+
+
+		return result;
+
+	}
+};
+
+int main()
+{
+	Solution a;
+
+	vector<int > re = { 9,9,9 };
+
+	cout << a.intToRoman(1239) << endl;
+	
+
+	system("pause");
+	return 0;
+}

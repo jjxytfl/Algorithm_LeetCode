@@ -1,0 +1,47 @@
+#include<iostream>
+#include<vector>  //时间100
+
+using namespace std;
+
+class Solution {
+public:
+	bool canReach(string s, int minJump, int maxJump) {
+		int n = s.size();
+		if (s[n - 1] == '1')return false;
+
+		int i = 0, j = 1;
+		vector<int> ok;
+		ok.push_back(0);
+		while (j < n){
+			if (s[j] == '0'){
+				if (ok[i] + minJump <= j&&j <= ok[i] + maxJump){
+					ok.push_back(j); j++;
+				}
+				else if (ok[i] + minJump > j){
+					j++;
+				}
+				else if (j > ok[i] + maxJump){
+					if (i < ok.size() - 1)i++;
+					else return false;
+				}
+			}
+			else{
+				j++;
+			}
+		}
+		return ok[ok.size() - 1] == n - 1;
+
+	}
+};
+
+int main(){
+
+	string re = "111000";
+	vector<int> arr = { 1, 1, 100000 };
+	Solution a;
+	a.canReach("011010", 2, 3);
+
+	system("pause");
+}
+
+

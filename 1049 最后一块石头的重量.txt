@@ -1,0 +1,41 @@
+#include<iostream>
+#include<string>
+#include <vector>  //   算法也可以运用数学的推导公式进行分析，本题就是这样处理的，将题目转化为0-1背包问题   提交用的官方题解  涨见识了
+//https://leetcode-cn.com/problems/last-stone-weight-ii/solution/zui-hou-yi-kuai-shi-tou-de-zhong-liang-i-95p9/
+using namespace std;
+
+
+class Solution {
+public:
+	int lastStoneWeightII(vector<int> &stones) {
+		int sum = 0;
+		int n = stones.size();
+		for (int i = 0; i < n; i++)sum += stones[i];
+		int m = sum / 2;
+		vector<vector<int>> dp(n + 1, vector<int>(m + 1));
+		dp[0][0] = 1;//ture
+		for (int i = 0; i < n; ++i) {
+			for (int j = 0; j <= m; ++j) {
+				if (j < stones[i]) {
+					dp[i + 1][j] = dp[i][j];
+				}
+				else {
+					dp[i + 1][j] = dp[i][j] || dp[i][j - stones[i]];
+				}
+			}
+		}
+		for (int j = m;; --j) {
+			if (dp[n][j]) {
+				return sum - 2 * j;
+			}
+		}
+	}
+};
+
+int main(){
+	Solution a;
+	vector<int> b = { 1, 2, 3, 4 };
+
+
+	system("pause");
+}

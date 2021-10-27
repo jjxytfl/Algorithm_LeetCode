@@ -1,0 +1,68 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include<map>
+
+
+using namespace std;
+
+
+
+bool isok(string &str, int position, vector<string>& words, int l){
+	vector<int> index(words.size(), 0);
+	int total = 0;
+	for (int i = 0; i < words.size(); i++){
+		for (int j = 0; j < words.size(); j++){
+			if (!str.compare(position+ i*l, l, words.at(j))){
+				if (!index[j]){ 
+					index[j] = 1; 
+					break;
+				}
+			}
+			else total++;
+		}
+		if (total == words.size())return false;
+		else total = 0;
+	}
+	for (int i = 0; i < words.size(); i++){
+		if (!index[i])return false;
+	}
+	cout << "okok" << endl;
+	return true;
+}
+
+class Solution {
+public:
+	vector<int> findSubstring(string s, vector<string>& words) {
+		vector<int> results;
+		map<int, string> maps;
+		int failposition=0;
+		int n = words.size();//个数
+		int l = words[0].size();//长度
+		int sl = s.size();
+		cout << "sl= " << sl << " l= " << l << " n= " << n <<endl;
+		for (int i = 0; i <= sl - n*l; i++){
+			if (isok(s, i, words,l)){
+				results.push_back(i);
+				i += l-1;
+			}
+		}
+		for (int i = 0; i < results.size();i++){
+			cout << results[i] << endl;
+		}
+		return results;
+	}
+	
+	
+};
+
+int main(){
+	Solution a;
+	string str = "";
+	vector<string>strs;
+
+	//cout << strs.size() << endl;
+	a.findSubstring(str, strs);
+
+	system("pause");
+}

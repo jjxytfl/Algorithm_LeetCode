@@ -1,0 +1,53 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include <algorithm>    //力扣提交不上去超时（时间复杂度不太清楚，虽然初始数组只枚举一次，可是调每次都用了min_element）  看了解析要用单调栈去优化，
+
+
+
+using namespace std;
+
+
+class Solution {
+public:
+	int largestRectangleArea(vector<int>& heights) {
+		int n = heights.size();
+		if (n < 1)return 0;
+		int max = 0;
+		int minValue;
+		vector<int>::iterator it;
+
+		it = min_element(heights.begin(), heights.end());
+		if (*it*n > max)max = *it*n;
+		fen(heights, heights.begin(), it,max);
+		fen(heights, it+1, heights.end(), max);
+		
+		return max;
+	}
+	void fen(vector<int>& heights, vector<int>::iterator b, vector<int>::iterator e,int& max){
+		if (e - b<1)return;
+		vector<int>::iterator it = min_element(b, e);
+		if (*it*(e-b)>max)max = *it*(e-b);
+		fen(heights, b, it, max);
+		fen(heights, it+1, e, max);
+	}
+
+
+
+};
+
+int main()
+{
+	Solution a;
+
+	vector<int > re = { 9,9,9 };
+
+
+	string sa = "0000000000123";
+	
+	cout << a.largestRectangleArea(re) << endl;
+	
+
+	system("pause");
+	return 0;
+}

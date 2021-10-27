@@ -1,0 +1,29 @@
+#include<iostream>
+#include<vector> //easy
+
+using namespace std;
+
+class Solution {
+public:
+	int maxProfit(vector<int>& prices) {
+		int n = prices.size();
+		int num = 0;
+		int temp;
+		int q=-1;
+
+		for (int i = 0; i < n-1; ++i){
+			temp = prices[i + 1] - prices[i];
+			if (temp>0)num += temp;
+		}
+		return num;
+
+	}
+};
+
+int main(){
+	Solution a;
+
+	system("pause");
+}
+
+

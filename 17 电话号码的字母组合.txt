@@ -1,0 +1,35 @@
+#include<iostream>
+#include<string>
+#include <vector>                  //简单回溯
+
+using namespace std;
+
+
+class Solution {
+public:
+	vector<string> letterCombinations(string digits) {
+		vector<string> re;
+		if (digits.size() == 0)return re;
+		vector<string> num = { "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+		hs(re, digits, 0, "", num);
+		return re;
+	}
+
+	void hs(vector<string>& re, string& digits, int n, string t, vector<string>& num){
+		if (n == digits.size()){
+			re.push_back(t); return;
+		}
+		for (int i = 0; i < num[digits[n] - '2'].size(); i++){
+			hs(re, digits, n + 1, t + num[digits[n] - '2'][i], num);
+		}
+
+	}
+};
+
+
+int main(){
+	Solution a;
+	a.letterCombinations("23");
+
+	system("pause");
+}

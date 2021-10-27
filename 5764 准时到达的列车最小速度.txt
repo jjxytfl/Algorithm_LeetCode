@@ -1,0 +1,53 @@
+#include<iostream>
+#include<vector> //二分法          //第一时间没做出来，有几个测试用例过不去 卡在了类型转换上 以后遇到这种情况可以 long long hr = llround(hour * 100);
+
+using namespace std;
+
+class Solution {
+public:
+	int minSpeedOnTime(vector<int>& dist, double hour) {
+		int n = dist.size();
+		if (n - 1 > hour)return -1;
+
+		long long hr = llround(hour * 100);
+		int minv;
+		int nl = 0;
+		for (int i = 0; i < n; i++){
+			nl += dist[i];
+		}
+		minv = (nl * 100) / hr;
+
+		int v = minv;
+		int r = 1e7;
+		while (v < r){
+			int mid = v + (r - v) / 2;
+			long long t = 0;
+			for (int i = 0; i < n - 1; ++i){
+				t += (dist[i] - 1) / mid + 1;
+			}
+			t *= mid;
+			t += dist[n - 1];
+			if (t * 100 <= hr * mid){//时间够
+				r = mid;
+			}
+			else{
+				v = mid + 1;
+			}
+		}
+		return v;
+	}
+
+};
+
+int main(){
+
+	string re = "111000";
+	vector<int> arr = { 1, 1, 100000 };
+	Solution a;
+	cout << (double)2.01 << endl;
+	cout << a.minSpeedOnTime(arr,2.01) << endl;
+
+	system("pause");
+}
+
+

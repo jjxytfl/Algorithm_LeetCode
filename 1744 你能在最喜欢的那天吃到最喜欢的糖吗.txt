@@ -1,0 +1,42 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include<algorithm>           //题目不难就是临界条件有点苛刻，本来我想着不新建数组就用它原来的candiesCount自加，到后面数据大了，爆int了，今天状态不行，一道就行了
+
+using namespace std;
+
+class Solution {
+public:
+	vector<bool> canEat(vector<int>& candiesCount, vector<vector<int>>& queries) {
+		int n = candiesCount.size();
+		int m = queries.size();
+		vector<long long> can;
+
+		can.push_back(0);
+		for (int i = 0; i < n; i++){
+			can.push_back(can[i] + candiesCount[i]);
+		}
+
+		vector<bool> re(m);
+		for (int i = 0; i < m; i++){
+			long long max = (long long)queries[i][2] * (queries[i][1] + 1);
+			long long min = queries[i][1] + 1;
+			if (max>can[queries[i][0]] && min <= can[queries[i][0] + 1]){
+				re[i] = true;
+			}
+			else{
+				re[i] = false;
+			}
+		}
+		return re;
+
+	}
+};
+
+
+int main(){
+	Solution a;
+
+
+	system("pause");
+}

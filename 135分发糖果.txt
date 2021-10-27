@@ -1,0 +1,184 @@
+//分发糖果
+//老师想给孩子们分发糖果，有N个孩子站成了一条直线，老师会根据每个孩子的表现，预先给他们评分。
+//你需要按照以下要求，帮助老师给这些孩子分发糖果:
+//●每个孩子至少分配到1个糖果。
+//●评分更高的孩子必须比他两侧的邻位孩子获得更多的糖果。
+//那么这样下来，老师至少需要准备多少颗糖果呢?
+
+//c++实现  为了学技术整了些花瓶操作  如控制台光标的获取及移动
+
+#include <iostream>
+#include<string>
+#include <vector>
+#include <Windows.h>//
+
+using namespace std;
+
+class DistributeCandy;
+void coverfront(vector<DistributeCandy > &childrens, int i);
+void generateDistributeCandy(vector<DistributeCandy > &childrens);
+void c_main();
+void gotoxy(int x, int y);
+void endshow(vector<DistributeCandy > &childrens);
+void initchildrens(vector<DistributeCandy > &childrens);
+
+
+
+//获取光标位置
+HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);        //操控
+CONSOLE_SCREEN_BUFFER_INFO csbi;                          //控制台屏幕缓冲区信息
+
+//GetConsoleScreenBufferInfo(hConsole, &csbi))
+//printf("光标坐标:(%d,%d)\n", csbi.dwCursorPosition.X, csbi.dwCursorPosition.Y);
+
+void gotoxy(int x, int y)
+{
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+class DistributeCandy{
+
+
+public:
+	DistributeCandy(){
+		score = 0;
+		candyNumber = 1;
+	}
+
+	DistributeCandy(int score){
+		this->score = score;
+		candyNumber = 1;
+	}
+
+	int Getscore(){
+		return score;
+	}
+	int GetcandyNumber(){
+		return candyNumber;
+	}
+	/*void Setscore(int score){
+		this->score = score;
+	}*/
+
+	void SetcandyNumber(int candyNumber){
+		this->candyNumber = candyNumber;
+	}
+
+
+	bool operator>(DistributeCandy children){
+		return this->score > children.score;
+	}
+	bool operator<(DistributeCandy children){
+		return this->score < children.score;
+	}
+	bool operator<(int num){
+		return this->candyNumber < num;
+	}
+
+	friend ostream &operator<<(ostream &output, const DistributeCandy &children){
+		GetConsoleScreenBufferInfo(hConsole, &csbi);//获取当前光标位置
+		int x = csbi.dwCursorPosition.X;
+		int y = csbi.dwCursorPosition.Y;
+
+		output << "  " << children.score;
+		gotoxy(x, y + 1);
+		output<< "  " << children.candyNumber;
+		gotoxy(x+5, y);
+
+		return output;
+	}
+
+
+private:
+	int score;
+	int candyNumber;
+
+
+};
+
+void coverfront(vector<DistributeCandy > &childrens,int i){
+	if (i<1)return;
+	if (childrens[i - 1] > childrens[i]){
+		childrens[i - 1].SetcandyNumber(max(childrens[i].GetcandyNumber() + 1, childrens[i - 1].GetcandyNumber()));
+		coverfront(childrens, i - 1);
+	}
+}
+
+void generateDistributeCandy(vector<DistributeCandy > &childrens){
+	
+	for (int i = 0; i < childrens.size()-1; i++){
+		if (childrens[i]<childrens[i + 1]){
+			childrens[i + 1].SetcandyNumber(childrens[i].GetcandyNumber()+1);
+		}
+		else if (childrens[i]>childrens[i + 1]){
+			if (childrens[i] < 2){
+				childrens[i].SetcandyNumber(2);
+				coverfront(childrens, i);
+			}
+		}
+		else{
+			childrens[i + 1].SetcandyNumber(childrens[i].GetcandyNumber());
+		}
+	}
+}
+
+int countend(vector<DistributeCandy > &childrens){
+	int num = 0;
+	for (int i = 0; i < childrens.size(); i++){
+		num += childrens[i].GetcandyNumber();
+	}
+	return num;
+}
+
+void endshow(vector<DistributeCandy > &childrens){
+	cout << "\n分发糖果的结果如下:\n" << endl;
+	GetConsoleScreenBufferInfo(hConsole, &csbi);//获取当前光标位置
+	int x = csbi.dwCursorPosition.X;
+	int y = csbi.dwCursorPosition.Y;
+	cout << "小朋友的评分:" << endl;
+	cout << "糖果分发情况:" << endl;
+	gotoxy(x+15, y);
+	for (int i = 0; i < childrens.size(); i++){
+		cout << childrens[i];
+	}
+	gotoxy(0, y+3);
+	cout << "老师至少要准备" << countend(childrens) << "个糖果";
+}
+
+void initchildrens(vector<DistributeCandy > &childrens){
+	int score;
+	int t;
+	cout << "请输入同学的人数：" << endl;
+	cin >> t;
+
+	cout << "请依次输入同学的评分：" << endl;
+	for (int i = 0; i < t; i++){
+		cin >> score;
+		childrens.push_back(DistributeCandy(score));
+	}
+}
+
+
+
+void c_main(){
+	vector<DistributeCandy > childrens;
+	initchildrens(childrens);
+	generateDistributeCandy(childrens);
+	endshow(childrens);
+	
+}
+
+
+int main()
+{
+	
+	
+	c_main();
+	GetConsoleScreenBufferInfo(hConsole, &csbi);//获取当前光标位置
+	gotoxy(0, csbi.dwCursorPosition.Y + 5);
+	system("pause");
+	return 0;
+}

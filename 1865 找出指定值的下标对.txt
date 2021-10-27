@@ -1,0 +1,103 @@
+#include<iostream>
+#include<string>
+#include <vector>
+#include <algorithm>  //最后一个测试用例超时
+
+
+
+using namespace std;
+
+class FindSumPairs{
+public:
+	vector<int> nums1, nums2;
+	vector<int> nums1t, nums2t;
+	FindSumPairs(vector<int>& nums1, vector<int>& nums2) {
+		this->nums1 = nums1;
+		this->nums2 = nums2;
+		this->nums1t = nums1;
+		this->nums2t = nums2;
+		sort(nums1t.begin(), nums1t.end());
+		sort(nums2t.begin(), nums2t.end());
+	}
+
+	void add(int index, int val) {
+		vector<int>::iterator iter = std::find(nums2t.begin(), nums2t.end(), nums2[index]);
+		nums2[index] += val;//增加
+		//int temp;
+		while (iter + 1 != nums2t.end() && *iter == *(iter + 1)){
+			iter++;
+		}
+		vector<int>::iterator itert = iter;
+		cout << *itert << endl;
+
+		while (iter + 1 != nums2t.end() && *itert + val > *(iter + 1)){
+			*iter = *(iter + 1);
+			iter++;
+		}
+
+
+		*iter = *itert + val;
+	}
+
+	int count(int tot) {
+		int i, j;
+		int num = 0;
+		int n1 = nums1t.size();
+		int n2 = nums2t.size();
+		for (int i = 0; i < n1; i++)cout << nums1t[i] << " ";
+		cout << endl;
+		for (int i = 0; i < n2; i++)cout << nums2t[i] << " ";
+		cout << endl;
+
+		i = 0; j = n2 - 1;
+		while (1){
+			if (j < 0 || i >= n1)break;
+			if (nums1t[i] + nums2t[j] < tot){
+				i++;
+			}
+			else if (nums1t[i] + nums2t[j] > tot){
+				j--;
+			}
+			else{//==
+				int a = 1, b = 1;
+				while (i + 1 < n1&&nums1t[i] == nums1t[i + 1]){
+					i++; a++;
+				}
+				while (j - 1 >= 0 && nums2t[j] == nums2t[j - 1]){
+					j--; b++;
+				}
+				i++; j--;
+				num += a*b;
+
+
+			}
+
+
+		}
+
+
+
+		return num;
+
+	}
+};
+
+/**
+* Your FindSumPairs object will be instantiated and called as such:
+* FindSumPairs* obj = new FindSumPairs(nums1, nums2);
+* obj->add(index,val);
+* int param_2 = obj->count(tot);
+*/
+
+int main()
+{
+
+
+
+	/*Solution a;
+	cout << a.minSwaps("1011010");*/
+
+
+	system("pause");
+	return 0;
+}
