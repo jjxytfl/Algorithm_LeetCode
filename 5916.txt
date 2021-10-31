@@ -1,0 +1,59 @@
+class Solution {
+public:
+	int minimumOperations(vector<int>& nums, int start, int goal) {
+		vector<int> dp(1001, INT_MAX);
+		unordered_map<int, int> map;
+		vector<int> dis;
+		for (int n : nums){
+			if (n >= -1001 && n <= 1001)dis.push_back(n);
+		}
+
+		queue<int> q;
+		q.push(start);
+		map[start] = 1;
+		dp[start] = 0;
+		while (!q.empty()){
+			int t = q.front();
+			q.pop();
+
+			for (int n : dis){
+				if (map[t + n] != 1 && t + n >= 0 && t + n <= 1000){
+					q.push(t + n);
+					map[t + n] = 1;
+					dp[t + n] = min(dp[t + n], dp[t] + 1);
+				}
+				if (map[t - n] != 1 && t - n >= 0 && t - n <= 1000){
+					q.push(t - n);
+					map[t - n] = 1;
+					dp[t - n] = min(dp[t - n], dp[t] + 1);
+				}
+				int temp = t^n;
+				if (map[temp] != 1 && temp >= 0 && temp <= 1000){
+					q.push(temp);
+					map[temp] = 1;
+					dp[temp] = min(dp[temp], dp[t] + 1);
+				}
+			}
+		}
+
+		if (goal >= 0 && goal <= 1000)return dp[goal] != INT_MAX ? dp[goal] : -1;
+
+		int ans = INT_MAX;
+		for (int n : nums){
+			if (goal + n >= 0 && goal + n <= 1000 && dp[goal + n] != INT_MAX){
+				ans = min(ans, dp[goal + n] + 1);
+			}
+			if (goal - n >= 0 && goal - n <= 1000 && dp[goal - n] != INT_MAX){
+				ans = min(ans, dp[goal - n] + 1);
+			}
+			int temp = goal ^ n;
+			if (temp >= 0 && temp <= 1000 && dp[temp] != INT_MAX){
+				ans = min(ans, dp[temp] + 1);
+			}
+		}
+
+		return ans != INT_MAX ? ans : -1;
+
+
+	}
+};
