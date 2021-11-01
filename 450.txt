@@ -1,0 +1,69 @@
+class Solution {
+public:
+	TreeNode* deleteNode(TreeNode* root, int key) {
+		if (!root)return root;
+		TreeNode* temp = root;
+		TreeNode* ret = root;
+		//因为根节点没有父节点所以要单独处理
+		if (root->val == key){
+			TreeNode* l = root->left;
+			if (root->right != nullptr){
+				ret = root->right;
+				root = root->right;
+				while (root->left != nullptr){
+					root = root->left;
+				}
+				root->left = l;
+			}
+			else{
+				ret = root->left;
+			}
+			return ret;
+		}
+		//进行比较，遇到目标节点时，若其右子树为空则用左子树代替，
+		//若不为空，则用右子树代替，并且需要吧原来左子树拼接到后面
+		while (temp != nullptr){
+			if (temp->val == key){
+				TreeNode* l = temp->left;
+				if (temp->right != nullptr){
+					if (root->val > temp->val){
+						root->left = temp->right;
+					}
+					else{
+						root->right = temp->right;
+					}
+					root = temp->right;
+					temp = temp->right->left;
+					while (temp != nullptr){
+						root = temp;
+						temp = temp->left;
+					}
+					root->left = l;
+				}
+				else{
+					if (root->val > temp->val){
+						root->left = l;
+					}
+					else{
+						root->right = l;
+					}
+
+				}
+				return ret;
+
+			}
+			else if (temp->val < key){
+				root = temp;
+				temp = temp->right;
+			}
+			else{
+				root = temp;
+				temp = temp->left;
+
+			}
+		}
+
+		return ret;
+
+	}
+};

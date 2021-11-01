@@ -1,0 +1,23 @@
+class Solution {
+public:
+	TreeNode* trimBST(TreeNode* root, int low, int high) {
+		if (!root)return root;
+		if (root->val > high){
+			TreeNode* temp = root;
+			root = root->left;
+			return trimBST(root, low, high);
+			delete temp;
+		}
+		else if (root->val < low){
+			TreeNode* temp = root;
+			root = root->right;
+			return trimBST(root, low, high);
+			delete temp;
+		}
+		else{
+			root->left = trimBST(root->left, low, high);
+			root->right = trimBST(root->right, low, high);
+		}
+		return root;
+	}
+};
