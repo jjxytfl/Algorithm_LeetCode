@@ -1,0 +1,8 @@
+//数组的运行速度快于map，set，因为他们的底层是平衡二叉搜索树
+class Solution {
+public:
+	int distributeCandies(vector<int>& candyType) {
+		set<int> s(candyType.begin(), candyType.end());
+		return s.size() >= candyType.size() / 2 ? candyType.size() / 2 : s.size();
+	}
+};
