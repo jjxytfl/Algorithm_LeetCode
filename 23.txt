@@ -1,0 +1,25 @@
+typedef pair<int, ListNode*> piL;
+
+class Solution {
+public:
+	ListNode* mergeKLists(vector<ListNode*>& lists) {
+		//这里greater<piL>不会报错吗？,ListNode* 重载了"<"?
+		priority_queue<piL, vector<piL>, greater<piL> > q;
+		ListNode* temphead = new ListNode(-1);
+		ListNode* head = temphead;
+
+		for (auto l : lists){
+			if(l!=nullptr)q.push({ l->val, l });
+		}
+		while (!q.empty()){
+			auto t = q.top();
+			q.pop();
+
+			head->next = t.second;
+			if(t.second->next!=nullptr)q.push({t.second->next->val, t.second->next});
+			head = head->next;
+		}
+
+		return temphead->next;
+	}
+};
