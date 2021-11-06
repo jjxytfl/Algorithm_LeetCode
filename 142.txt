@@ -1,0 +1,23 @@
+//双指针 - 快慢指针 , 这个快慢指针还用到了数学推导 ， 好妙啊
+class Solution {
+public:
+	ListNode *detectCycle(ListNode *head) {
+		ListNode *slow = head, *fast = head;
+		while (fast != nullptr) {
+			slow = slow->next;
+			if (fast->next == nullptr) {
+				return nullptr;
+			}
+			fast = fast->next->next;
+			if (fast == slow) {
+				ListNode *ptr = head;
+				while (ptr != slow) {
+					ptr = ptr->next;
+					slow = slow->next;
+				}
+				return ptr;
+			}
+		}
+		return nullptr;
+	}
+};

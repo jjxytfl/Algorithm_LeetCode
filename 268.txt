@@ -1,0 +1,15 @@
+//还可以用位运算，相同的两个数异或结果为0，任何数于0异或结果为其本身，学到了
+class Solution {
+public:
+	int missingNumber(vector<int>& nums) {
+		int n = nums.size();
+		int sum = n*(n + 1) >> 1;
+
+		int nsum = 0;
+		for (int n : nums){
+			nsum += n;
+		}
+		return sum - nsum;
+
+	}
+};
