@@ -1,0 +1,26 @@
+class Solution {
+public:
+	bool detectCapitalUse(string word) {
+		int n = word.size();
+		if (n == 1)return true;
+		bool big = false;
+		if (word[0] >= 'a'&&word[1] < 'a'){
+			return false;
+		}
+		if (word[0] < 'a'&& word[1] < 'a'){
+			big = true;
+		}
+
+		for (int i = 2; i < n; i++){
+			if (big){
+				if (word[i] >= 'a')return false;
+			}
+			else{
+				if (word[i] < 'a')return false;
+			}
+		}
+
+		return true;
+
+	}
+};
