@@ -1,0 +1,75 @@
+
+class Solution {
+public:
+	string multiply(string num1, string num2) {
+		if (num1 == "0" || num2 == "0")return"0";
+		string ret = "0";
+		int zeron = 0;
+		for (int i = num2.size() - 1; i >= 0; i--){
+			if (num2[i] == '0'){
+				zeron++;
+				continue;
+			}
+			string temp = helperC(num1, num2[i]);
+			for (int j = 0; j < zeron; j++)temp += '0';
+			helperJ(ret, temp);
+			zeron++;
+		}
+		return ret;
+
+	}
+
+	string helperC(string& num,char n){
+		int p = 0;
+		int x = n - '0';
+		string ret;
+		for (int i = num.size() - 1; i >= 0; i--){
+			int temp = p + x*(num[i] - '0');
+			p = temp / 10;
+			ret += (temp % 10) + '0';
+			if (i == 0 && p != 0){
+				ret += p + '0';
+			}
+		}
+		reverse(ret.begin(), ret.end());
+		return ret;
+	}
+
+	void helperJ(string& num1, string& num2){
+		int n1 = num1.size();
+		int n2 = num2.size();
+		int i = 0;
+		int p = 0;
+		string ret;
+		while (i < n1&&i < n2){
+			int temp = p + (num1[n1 - i - 1] - '0') + (num2[n2 - i - 1] - '0');
+			p = temp / 10;
+			ret += (temp % 10 + '0');
+			i++;
+		}
+		if (i < n1){
+			while (i < n1){
+				int temp = p + num1[n1 - i - 1] - '0';
+				p = temp / 10;
+				ret += (temp % 10 + '0');
+				i++;
+			}
+			if (p != 0)ret += p + '0';
+		}else if (i < n2){
+			while (i < n2){
+				int temp = p + num2[n2 - i - 1] - '0';
+				p = temp / 10;
+				ret += (temp % 10 + '0');
+				i++;
+			}
+			if (p != 0)ret += p + '0';
+		}
+		else{
+			if (p != 0)ret += p + '0';
+		}
+		reverse(ret.begin(), ret.end());
+		num1 = ret;
+
+	}
+
+};
