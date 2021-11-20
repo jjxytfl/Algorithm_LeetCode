@@ -1,0 +1,28 @@
+class Solution {
+public:
+	int findLHS(vector<int>& nums) {
+		int n = nums.size();
+		if (n < 2)return 0;
+		sort(nums.begin(), nums.end());
+		int i = 0;
+		
+		pair<int, int> sign{ nums[0], 0 };
+		int ret = 0;
+		while (i<n){
+			int i_ = i;
+            pair<int, int> temp;
+			temp.first = nums[i];
+			while (i < n && nums[i_] == nums[i]){
+				i++;
+				temp.second++;
+			}
+			if (temp.first == sign.first + 1){
+				ret = max(ret, sign.second + temp.second);
+			}
+            
+			sign = temp;
+		}
+
+		return ret;
+	}
+};

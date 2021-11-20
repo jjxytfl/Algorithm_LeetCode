@@ -1,0 +1,40 @@
+//这道题目可以压状，即用 一个位取表示一个字母是否出现，一个int就够了
+//在压状的基础上可以用哈希 存储相同状态的字母的最大值
+class Solution {
+public:
+	struct Word{
+		int len;
+		vector<int> sign;
+	};
+	int maxProduct(vector<string>& words) {
+		int n = words.size();
+		vector<Word> w(n);
+		for (int i = 0; i < n; i++){
+			w[i].len = words[i].size();
+			w[i].sign = vector<int>(26, 0);
+			for (auto c : words[i]){
+				w[i].sign[c - 'a'] = 1;
+			}
+		}
+
+		int ret = 0;
+
+		for (int i = 0; i < n; i++){
+			for (int j = 0; j < n; j++){
+				bool b = true;
+				for (int k = 0; k < 26; k++){
+					if (w[i].sign[k] == 1 && w[j].sign[k] == 1){
+						b = false;
+						break;
+					}
+				}
+				if (b){
+					ret = max(ret, w[i].len * w[j].len);
+				}
+			}
+		}
+
+		return ret;
+
+	}
+};
