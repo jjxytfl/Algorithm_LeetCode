@@ -1,0 +1,17 @@
+class Solution {
+public:
+	ListNode* deleteDuplicates(ListNode* head) {
+		int temp;
+		ListNode* h = head;
+
+		while (h != nullptr){
+			int n = h->val;
+			ListNode* t = h;
+			while (h != nullptr&&h->val == n){
+				h = h->next;
+			}
+			t->next = h;
+		}
+		return head;
+	}
+};

@@ -1,0 +1,25 @@
+class Solution {
+public:
+	bool isPalindrome(string s) {
+		int r = 0, l = s.size();
+
+		while (r < l){
+			while (r < l && (!((s[r]>='a'&&s[r]<='z') || (s[r]>='A'&&s[r] <= 'Z') || (s[r]>='0'&&s[r]<='9')))){
+				r++;
+			}
+
+			while (l > r && (!((s[l]>='a'&&s[l]<='z') || (s[l]>='A'&&s[l] <= 'Z') || (s[l]>='0'&&s[l]<='9')))){
+				l--;
+			}
+
+			if (r < l && (s[r] >= 'a' ? s[r] - 'a' : s[r] - 'A') != (s[l] >= 'a' ? s[l] - 'a' : s[l] - 'A')){
+				return false;
+			}
+            r++;
+            l--;
+
+		}
+
+		return true;
+	}
+};
