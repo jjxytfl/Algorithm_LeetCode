@@ -1,0 +1,66 @@
+class Solution {
+public:
+	int countBattleships(vector<vector<char>>& board) {
+		int n = board.size();
+		int m = board[0].size();
+
+		vector<vector<int>> sign(n, vector<int>(m, 1));
+		int ret = 0;
+
+		for (int i = 0; i < n; i++){
+			for (int j = 0; j < m; j++){
+				if (sign[i][j] == 1 && board[i][j] == 'X'){
+					int ti = i, tj = j;
+					if (tj + 1 < m && board[ti][tj + 1] == 'X'){
+						while (tj < m && board[ti][tj] == 'X'){
+							sign[ti][tj] = 0;
+							tj++;
+						}
+					}
+					else{
+						while (ti < n && board[ti][tj] == 'X'){
+							sign[ti][tj] = 0;
+							ti++;
+						}
+					}
+					ret++;
+				}
+				else{
+					sign[i][j] = 0;
+				}
+
+			}
+		}
+
+
+		return ret;
+	}
+};
+
+
+
+//枚举起点
+/*
+class Solution {
+public:
+    int countBattleships(vector<vector<char>>& board) {
+        int row = board.size();
+        int col = board[0].size();
+        int ans = 0;
+        for (int i = 0; i < row; ++i) {
+            for (int j = 0; j < col; ++j) { 
+                if (board[i][j] == 'X') {
+                    if (i > 0 && board[i - 1][j] == 'X') {
+                        continue;
+                    }
+                    if (j > 0 && board[i][j - 1] == 'X') {
+                        continue;
+                    }
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+};
+*/
