@@ -1,0 +1,112 @@
+class Solution {
+public:
+	int visiblePoints(vector<vector<int>>& points, int angle, vector<int>& location) {
+		map<float, int> m;
+		float px = location[0];
+		float py = location[1];
+		int ans = 0;
+
+		for (auto p : points){
+			if (px == p[0]){
+				if (py == p[1]){
+					ans++;
+				}
+				else if(py < p[1]){
+					m[90]++;
+					m[90 + 360]++;
+				}
+				else{
+					m[270]++;
+					m[270 + 360]++;
+				}
+			}
+			else{
+				float t = (p[1] - py) / (p[0] - px);
+				float at = atanf(t) * 180 / 3.14159265;
+                if(t>0){
+                    if(p[0] - px>0){
+                        m[at]++;
+				        m[at + 360]++;
+                    }else{
+                        m[at + 180]++;
+				        m[at + 180 + 360]++;
+                    }
+                }else{
+                    if(p[0] - px>0){
+                        m[360 + at]++;
+                        m[360 + at + 360]++;
+                    }else{
+                        m[180 + at]++;
+                        m[180 + at + 360]++;
+                    }
+                }
+			}
+		}
+		
+		vector<pair<float,int>> a;
+
+		for (auto t : m){
+			a.push_back(t);
+		}
+
+		int n = a.size();
+
+		int i = 0, j = 0;
+		int ma = 0;
+		int temp = 0;
+		while(i < n && j < n){
+			while (i < n && (a[i].first - a[j].first) <= angle){
+				temp += a[i].second;
+                i++;
+			}
+
+			ma = max(ma, temp);
+			temp -= a[j].second;
+			j++;
+			
+		}
+
+		return ans + ma;
+	}
+};
+
+
+
+
+/*
+
+class Solution {
+public:
+    int visiblePoints(vector<vector<int>>& points, int angle, vector<int>& location) {
+        int sameCnt = 0;
+        vector<double> polarDegrees;
+        for (auto & point : points) {
+            if (point[0] == location[0] && point[1] == location[1]) {
+                sameCnt++;
+                continue;
+            }
+            double degree = atan2(point[1] - location[1], point[0] - location[0]);
+            polarDegrees.emplace_back(degree);
+        }
+        sort(polarDegrees.begin(), polarDegrees.end());
+
+        int m = polarDegrees.size();
+        for (int i = 0; i < m; ++i) {
+            polarDegrees.emplace_back(polarDegrees[i] + 2 * M_PI);
+        }
+
+        int maxCnt = 0;
+        int right = 0;
+        double degree = angle * M_PI / 180;
+        for (int i = 0; i < m; ++i) {
+            while (right < polarDegrees.size() && polarDegrees[right] <= polarDegrees[i] + degree) {
+                right++;
+            }
+            maxCnt = max(maxCnt, right - i);
+        }
+        return maxCnt + sameCnt;
+    }
+};
+
+
+*/
