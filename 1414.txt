@@ -1,0 +1,24 @@
+class Solution {
+public:
+	typedef long long ll;
+	int findMinFibonacciNumbers(int k) {
+		
+		int ret = 0;
+		while (k){
+			k = helper(k);
+			ret++;
+		}
+		return ret;
+	}
+
+
+	int helper(int k){
+		ll a = 1, b = 1;
+		while (k >= b){
+			ll temp = a;
+			a = b;
+			b = temp + b;
+		}
+		return k - a;
+	}
+};
