@@ -1,0 +1,27 @@
+class Solution {
+public:
+	string convert(string s, int numRows) {
+		if (numRows == 1)return s;
+		int n = s.size();
+		vector<vector<char>> z(numRows, vector<char>());
+		int l = 0;
+		int t = -1;
+
+		for (int i = 0; i < n; i++){
+			z[l].push_back(s[i]);
+			if (l == 0 || l == numRows - 1){
+				t *= -1;
+			}
+			l += t;
+
+		}
+		string ans;
+		for (int i = 0; i < numRows; i++){
+			for (int j = 0; j < z[i].size(); j++){
+				ans += z[i][j];
+			}
+		}
+		return ans;
+
+	}
+};
