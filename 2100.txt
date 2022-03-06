@@ -1,0 +1,38 @@
+class Solution {
+public:
+	vector<int> goodDaysToRobBank(vector<int>& security, int time) {
+		int n = security.size();
+		vector<int> dpl(n);
+		vector<int> dpr(n);
+		dpl[0] = 1;
+		dpr[n - 1] = 1;
+
+		int temp = 1;
+		for (int i = 1; i < n; i++){
+			if (security[i]<=security[i - 1]){
+				temp++;
+			}
+			else{
+				temp = 1;
+			}
+			dpl[i] = temp;
+		}
+		for (int i = n - 2; i >= 0; i--){
+			if (security[i] <= security[i + 1]){
+				temp++;
+			}
+			else{
+				temp = 1;
+			}
+			dpr[i] = temp;
+		}
+		vector<int> ans;
+
+		for (int i = time; i < n - time; i++){
+			if (dpl[i]>time && dpr[i] > time){
+				ans.push_back(i);
+			}
+		}
+		return ans;
+	}
+};
