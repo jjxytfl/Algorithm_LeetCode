@@ -1,0 +1,80 @@
+class Solution {
+public:
+	vector<int> platesBetweenCandles(string s, vector<vector<int>>& queries) {
+		int n = s.size();
+		//左*  左|
+		vector<int> dpl(n);
+		vector<int> dpr(n);
+		int temp = -1;
+		int total = 0;
+		int sum = 0;
+		if (s[0] == '*'){
+			dpl[0] = temp;
+			sum++;
+		}
+		else{
+			dpl[0] = 0;
+			temp = 0;
+		}
+		
+		for (int i = 1; i < n; i++){
+			if (s[i] == '*'){
+				sum++;
+				dpl[i] = temp;
+			}
+			else{
+				dpl[i] = sum;
+				temp = i;
+			}
+		}
+		total = sum;
+		sum = 0;
+		if (s[n-1] == '*'){
+			dpr[n-1] = temp;
+			sum++;
+		}
+		else{
+			dpr[n-1] = 0;
+			temp = n;
+		}
+		for (int i = n - 2; i >= 0; i--){
+			if (s[i] == '*'){
+				sum++;
+				dpr[i] = temp;
+			}
+			else{
+				dpr[i] = sum;
+				temp = i;
+			}
+		}
+
+		int len = queries.size();
+		vector<int> ans(len);
+		for (int i = 0; i < len; i++){
+			int l, r;
+			if (s[queries[i][0]] == '*'){
+				l = dpr[queries[i][0]];
+			}
+			else{
+				l = queries[i][0];
+			}
+
+			if (s[queries[i][1]] == '*'){
+				r = dpl[queries[i][1]];
+			}
+			else{
+				r = queries[i][1];
+			}
+			if (l > r || l == n || r == -1)continue;
+			else{
+				ans[i]=total-dpl[l]-dpr[r];
+                cout<<dpl[l]<<" "<<dpr[r]<<endl;
+			}
+			
+
+		}
+		return ans;
+
+
+	}
+};

@@ -1,0 +1,21 @@
+class Solution {
+public:
+	string convertToBase7(int num) {
+        if(num==0)return "0";
+        int sign=1;
+        if(num<0){
+            sign=0;
+            num*=-1;
+        }
+		string ans = "";
+
+		while (num){
+			ans += num % 7 + '0';
+			num /= 7;
+		}
+        reverse(ans.begin(), ans.end());
+        if(!sign)ans='-'+ans;
+		return ans;
+
+	}
+};
