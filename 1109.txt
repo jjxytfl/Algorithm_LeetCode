@@ -1,0 +1,21 @@
+class Solution {
+public:
+	vector<int> corpFlightBookings(vector<vector<int>>& bookings, int n) {
+		vector<int> diffs(n + 1);
+		
+		for (auto& b : bookings){
+			int l = b[0] - 1, r = b[1], v = b[2];
+			diffs[l] += v;
+			diffs[r] -= v;
+		}
+
+		vector<int> ans(n);
+		ans[0] = diffs[0];
+
+		for (int i = 1; i < n; i++){
+			ans[i] = ans[i - 1] + diffs[i];
+		}
+
+		return ans;
+	}
+};
