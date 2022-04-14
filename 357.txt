@@ -1,0 +1,17 @@
+class Solution {
+public:
+	int countNumbersWithUniqueDigits(int n) {
+		if (n == 0)return 1;
+
+		int ans = 10;
+		for (int i = 2; i <= n; i++){
+			int t1 = 1, t2 = 1;
+			for (int j = 10; j > 10 - i; j--)
+				t1 *= j;
+			for (int j = 9; j > 10 - i; j--)
+				t2 *= j;
+			ans += t1 - t2;
+		}
+		return ans;
+	}
+};
