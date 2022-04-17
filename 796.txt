@@ -1,0 +1,16 @@
+class Solution {
+public:
+	bool rotateString(string s, string goal) {
+		int n = s.size();
+		if (goal.size() != n)return false;
+		if (s == goal)return true;
+		for (int i = 1; i < n; i++){
+			if (s.substr(0, i) == goal.substr(n - i, i) && s.substr(i, n - i) == goal.substr(0, n - i)){
+				
+				return true;
+			}
+		}
+		return false;
+
+	}
+};
