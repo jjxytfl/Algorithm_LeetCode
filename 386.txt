@@ -1,0 +1,19 @@
+class Solution {
+public:
+	vector<int> lexicalOrder(int n) {
+		stack<int> s;
+		s.push(1);
+		vector<int> ans;
+
+		while (!s.empty()){
+			int t = s.top();
+			s.pop();
+			ans.push_back(t);
+
+			if (t % 10<9 && t + 1<= n)s.push(t + 1);
+			if (t * 10 <= n)s.push(t * 10);
+		}
+        
+		return ans;
+	}
+};
