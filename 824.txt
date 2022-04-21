@@ -1,0 +1,48 @@
+class Solution {
+public:
+	string toGoatLatin(string sentence) {
+		vector<string> sents;
+		set<char> yuan = { 'a', 'e', 'i', 'o', 'u'};
+		string temp = "";
+		for (auto s : sentence){
+			if (s != ' '){
+				temp += s;
+			}
+			else{
+				if (temp != "")sents.push_back(temp);
+				temp = "";
+			}
+		}
+		if (temp != "")sents.push_back(temp);
+		int cnt = 1;
+		for (auto &str : sents){
+			if (yuan.count(str[0]) == 1 || yuan.count(str[0]-('A'-'a')) == 1){
+				str += "ma";
+				for (int i = 0; i != cnt; i++){
+					str += "a";
+				}
+			}
+			else{
+				char c = str[0];
+				temp = str.substr(1, str.size() - 1);
+				temp += c;
+				temp += "ma";
+				str = temp;
+				for (int i = 0; i != cnt; i++){
+					str += "a";
+				}
+			}
+			cnt++;
+		}
+
+		string ans = "";
+		for (auto &str : sents){
+			ans += str;
+			ans += ' ';
+		}
+		ans.pop_back();
+		return ans;
+
+
+	}
+};
