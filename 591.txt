@@ -1,0 +1,74 @@
+class Solution {
+public:
+	bool isValid(string code) {
+		int n = code.size();
+		if (n < 4 || code[0] != '<'||code[1]=='!')return false;
+		string spe = "<![CDATA[";
+		string spe_end = "]]>";
+
+		stack<string> st;
+
+		int i = 0;
+		while (i < n){
+			string temp;
+			bool sign = false;
+			//"<![CDATA[
+			if (code[i] == '<'&&i + spe.size() < n&&code.substr(i, spe.size()) == spe){
+				i += spe.size();
+				while (i + spe_end.size() <= n&&code.substr(i, spe_end.size()) != spe_end){
+					i++;
+				}
+				if (i + spe_end.size() >= n)return false;
+				i += spe_end.size();
+				continue;
+			}
+
+			//<TAG_NAME>
+			if (code[i] == '<'&&i + 1 < n&&code[i + 1] != '/'){
+				i++;
+				while (i < n&&code[i] != '>'){
+					if (!(code[i] >= 'A'&&code[i] <= 'Z')){
+						return false;
+					}
+					temp += code[i];
+					i++;
+				}
+				if (i == n||temp.size()==0||temp.size()>9)return false;
+				
+				i++;
+				st.push(temp);
+				
+				continue;
+			}
+
+			//</TAG_NAME>
+			if (code[i] == '<'&&i + 1 < n&&code[i + 1] == '/'){
+				i += 2;
+				while (i < n&&code[i] != '>'){
+					if (!(code[i] >= 'A'&&code[i] <= 'Z')){
+						return false;
+					}
+					temp += code[i];
+					i++;
+				}
+				if (i == n || temp.size() == 0 || temp.size()>9)return false;
+				i++;
+                if (st.empty())return false;
+				string tt = st.top();
+				st.pop();
+				if (tt != temp)return false;
+				if (st.empty() && i < n)return false;
+
+				continue;
+			}
+
+			//TAG_CONTENT 
+			while (i < n&&code[i] != '<')
+				i++;
+
+		}
+		
+		return st.empty();
+
+	}
+};
