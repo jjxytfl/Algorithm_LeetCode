@@ -1,0 +1,21 @@
+class Solution {
+public:
+    static bool cmp(string& s1, string& s2){
+        int i1=s1.find(' '), i2=s2.find(' ');
+        auto sub1=s1.substr(i1+1), sub2=s2.substr(i2+1);//分割出标识符后的子串
+        if(sub1!=sub2)return  sub1<sub2;//对子串进行字典序排序
+        return s1<s2;//子串相同，对标识符进行排序
+    }
+    vector<string> reorderLogFiles(vector<string>& logs) {
+        if(logs.size()==1)return logs;
+        vector<string> res, tmp; //分别存储字母串和数字串
+        for(int i=0; i<logs.size(); ++i){
+            int p=logs[i].find(' ');//对字母串和数字串分别存放
+            if(logs[i][p+1]<'a')tmp.push_back(logs[i]);
+            else res.push_back(logs[i]);
+        }
+        sort(res.begin(), res.end(), cmp);
+        res.insert(res.end(), tmp.begin(), tmp.end());
+        return res;
+    }
+};
