@@ -1,0 +1,33 @@
+class Solution {
+public:
+	int findTheWinner(int n, int k) {
+		vector<int> arr(n, 1);
+
+		int temp = 0;
+		for (int i = 0; i < n-1; i++){
+			int t = ((k % (n - i)) == 0 ? (n - i) : k % (n - i));
+			int j = temp;
+			while (t > 0){
+				if (arr[j] == 1){
+					t--;
+					if (t == 0)arr[j] = 0;
+				}
+				j = (j + 1) % n;
+			}
+			
+			while (arr[j] != 1){
+				j = (j + 1) % n;
+			}
+			
+			temp = j;
+		}
+
+		for (int i = 0; i != n; i++){
+			if (arr[i]){
+				return i + 1;
+			}
+		}
+		return 0;
+
+	}
+};
