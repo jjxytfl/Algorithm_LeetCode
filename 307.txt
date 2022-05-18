@@ -1,0 +1,67 @@
+class NumArray {
+public:
+	struct node{
+		int l, r;
+		int num;
+	};
+
+	vector<node> vns;
+	vector<int> vis;
+
+	void build(int i, int l, int r){
+		vns[i] = { l, r, 0 };
+		if (vns[i].l == vns[i].r){
+			vns[i].num = vis[l - 1];
+			return;
+		}
+
+		int mid = l + r >> 1;
+		build(i << 1, l, mid);
+		build(i << 1 | 1, mid + 1, r);
+		vns[i].num = vns[i << 1].num + vns[i << 1 | 1].num;
+	}
+
+	NumArray(vector<int>& nums) {
+		vis = nums;
+		vns = vector<node>(nums.size() * 4);
+
+		build(1, 1, vis.size());
+	}
+
+
+	void modify(int i, int dis, int k){
+		if (vns[i].l == vns[i].r){
+			vns[i].num = k;
+			return;
+		}
+
+		int mid = vns[i].l + vns[i].r >> 1;
+		if (dis <= mid)modify(i << 1, dis, k);
+		else modify(i << 1 | 1, dis, k);
+
+		vns[i].num = vns[i << 1].num + vns[i << 1 | 1].num;
+	}
+
+
+	void update(int index, int val) {
+		modify(1, index + 1, val);
+	}
+
+	int search(int i, int l, int r){
+		if (vns[i].l >= l&&vns[i].r <= r){
+			return vns[i].num;
+		}
+		if (vns[i].l > r || vns[i].r < l)return 0;
+		int s = 0;
+        
+		if (vns[i*2].r >= l)s+=search(i * 2, l, r);
+		if (vns[i*2+1].l <= r)s+=search(i * 2 + 1, l, r);
+		return s;
+	}
+
+
+
+	int sumRange(int left, int right) {
+		return search(1, left+1, right+1);
+	}
+};
