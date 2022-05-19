@@ -1,0 +1,44 @@
+const int  maxn = 1005;	
+class Solution {
+public:
+	int pre[maxn];
+
+	void init(int n){
+		for (int i = 0; i<n; i++){
+			pre[i] = i;
+		}
+	}
+
+	int find(int x){
+		if (pre[x] == x)return x;
+		return pre[x] = find(pre[x]);
+	}
+
+	void join(int a, int b){
+		int ta = find(a), tb = find(b);
+		if (ta != tb)pre[ta] = tb;
+	}
+
+	bool isSame(int a, int b){
+		return find(a) == find(b);
+	}
+
+
+	int findCircleNum(vector<vector<int>>& isConnected) {
+		int n = isConnected.size();
+		init(n);
+		for (int i = 0; i < n; i++){
+			for (int j = i; j < n; j++){
+				if (isConnected[i][j] && !isSame(i, j))join(i, j);
+			}
+		}
+
+		set<int> ans;
+
+		for (int i = 0; i < n; i++){
+			ans.insert(find(pre[i]));
+		}
+
+		return ans.size();
+	}
+};
